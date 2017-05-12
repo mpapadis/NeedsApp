@@ -59,5 +59,6 @@ namespace NeedsApp.Droid
         public void OnActivityStopped(Activity activity)
         {
         }
+  
     }
 }

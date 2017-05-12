@@ -3,10 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NeedsApp.Core.Views.MainPage"
              xmlns:res="clr-namespace:NeedsApp.Core.Resources;assembly=NeedsApp.Core">
-  <Grid>
-    <Label Text="{res:Translate MainPageTitle}" 
-           VerticalOptions="Center"
-           HorizontalOptions="Center" 
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Label Text="{res:Translate MainPageTitle}" 
+
            StyleId="MainPageTitleLbl" />
-  </Grid>
+            <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
+            <Label Text="{Binding Latitude}"/>
+            <Label Text="{Binding Longitude}"/>
+        </StackLayout>
+        <ContentView x:Name="actIndBackground"
+                                BackgroundColor="Black" Opacity="0.5"
+                                AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                IsVisible="{Binding IsBusy}">
+        </ContentView>
+        <ActivityIndicator x:Name="actInd"
+                                AbsoluteLayout.LayoutFlags="PositionProportional"
+                                AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                                IsRunning="{Binding IsBusy}"
+                                IsVisible="{Binding IsBusy}" 
+                                BackgroundColor="White"/>
+    </AbsoluteLayout>
 </ContentPage>

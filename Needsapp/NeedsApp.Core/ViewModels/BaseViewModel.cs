@@ -2,6 +2,7 @@
 
 namespace NeedsApp.Core.ViewModels
 {
+    [PropertyChanged.ImplementPropertyChanged]
     public class BaseViewModel : MvxViewModel
     {
         private string _title;
@@ -20,7 +21,7 @@ namespace NeedsApp.Core.ViewModels
             set
             {
                 _title = value;
-                RaisePropertyChanged(() => Title);
+             //   RaisePropertyChanged();
             }
         }
 
@@ -33,7 +34,7 @@ namespace NeedsApp.Core.ViewModels
             set
             {
                 _isBusy = value;
-                RaisePropertyChanged(() => IsBusy);
+               // RaisePropertyChanged();
             }
         }
     }
