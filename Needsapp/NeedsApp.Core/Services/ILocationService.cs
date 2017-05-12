@@ -1,15 +1,13 @@
-﻿//using MvvmCross.Plugins.Location;
-using Egritosgroup.Ydrefsi.Core.Mobile;
-//using Plugin.Geolocator.Abstractions;
+﻿
+using NeedsApp.Core.Model;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Egritosgroup.Ydrefsi.Mobile.Services
+namespace NeedsApp.Core.Services
 {
     public interface ILocationService
     {
-        //MvxGeoLocation LastSeenLocation();
-        //MvxGeoLocation CurrentLocation();
+  
         Position CurrentLocation();
         Task<Position> GetCurrentLocationTask(CancellationToken _token);
 

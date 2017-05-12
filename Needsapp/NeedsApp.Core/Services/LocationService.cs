@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Egritosgroup.Ydrefsi.Core.Mobile;
 using Plugin.Geolocator;
 using System.Threading;
 using MvvmCross.Platform;
@@ -7,8 +6,9 @@ using Xamarin.Forms;
 using System;
 using System.Globalization;
 using Plugin.Geolocator.Abstractions;
+using NeedsApp.Core.Model;
 
-namespace Egritosgroup.Ydrefsi.Mobile.Services
+namespace NeedsApp.Core.Services
 {
     public class LocationService : ILocationService
     {
@@ -20,7 +20,7 @@ namespace Egritosgroup.Ydrefsi.Mobile.Services
             _geolocator.StartListeningAsync(1, 1);
         }
 
-        public Egritosgroup.Ydrefsi.Core.Mobile.Position CurrentLocation()
+        public Model.Position CurrentLocation()
         {
             if (_geolocator == null) return null;
             if (!_geolocator.IsGeolocationAvailable) return null;
@@ -66,10 +66,10 @@ namespace Egritosgroup.Ydrefsi.Mobile.Services
                 _geolocator.StopListeningAsync();
             }
             //return p;
-            return new Egritosgroup.Ydrefsi.Core.Mobile.Position() { Latitude = p.Latitude, Longitude = p.Longitude };
+            return new Model.Position() { Latitude = p.Latitude, Longitude = p.Longitude };
         }
 
-        public async Task<Egritosgroup.Ydrefsi.Core.Mobile.Position> GetCurrentLocationTask(CancellationToken _token)
+        public async Task<Model.Position> GetCurrentLocationTask(CancellationToken _token)
         {
             var isListening = _geolocator.IsListening;
             if (!isListening)
@@ -134,7 +134,7 @@ namespace Egritosgroup.Ydrefsi.Mobile.Services
             //return  position??null;
             if (position != null)
             {
-                return new Core.Mobile.Position() { Latitude = position.Latitude, Longitude = position.Longitude };
+                return new Model.Position() { Latitude = position.Latitude, Longitude = position.Longitude };
             }
             else
             {
