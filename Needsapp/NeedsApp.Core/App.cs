@@ -2,7 +2,7 @@
 using MvvmCross.Platform.IoC;
 using Xamarin.Forms;
 using MvvmCross.Platform;
-using Plugin.Permissions.Abstractions;
+
 
 namespace NeedsApp.Core
 {

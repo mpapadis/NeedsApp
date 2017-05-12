@@ -7,7 +7,7 @@ using System;
 using System.Globalization;
 using Plugin.Geolocator.Abstractions;
 using NeedsApp.Core.Model;
-using Plugin.Permissions.Abstractions;
+//using Plugin.Permissions.Abstractions;
 
 namespace NeedsApp.Core.Services
 {
@@ -15,11 +15,11 @@ namespace NeedsApp.Core.Services
     {
 
         private readonly IGeolocator _geolocator;
-        public LocationService(IPermissions permissions)
+        public LocationService()
         {
             _geolocator = CrossGeolocator.Current;
             _geolocator.StartListeningAsync(1, 1);
-            Permissions = permissions;
+            //Permissions = permissions;
         }
 
         public Model.Position CurrentLocation()
@@ -102,7 +102,7 @@ namespace NeedsApp.Core.Services
                 {
                     var p = new ContentPage();
                     var r = p.DisplayAlert("Προσοχή", string.Format("Η λειτουργία τοποθεσίας είναι απενεργοποιημένη.{0}Παρακαλώ ενεργοποιήστε την τοποθεσία και δοκιμάστε ξανά.", System.Environment.NewLine), "OK");
-                    await Permissions.RequestPermissionsAsync(Permission.Location);
+                    //await Permissions.RequestPermissionsAsync(Permission.Location);
                 }
                 catch (Exception ex)
                 {
@@ -150,7 +150,7 @@ namespace NeedsApp.Core.Services
 
         public const double EarthRadiusInMeters = 6367000.0;
 
-        public IPermissions Permissions { get; private set; }
+        //public IPermissions Permissions { get; private set; }
 
         public static double ToRadian(double val) { return val * (Math.PI / 180); }
         public static double DiffRadian(double val1, double val2) { return ToRadian(val2) - ToRadian(val1); }

@@ -2,7 +2,7 @@
 using MvvmCross.Platform;
 using NeedsApp.Core.Model;
 using NeedsApp.Core.Services;
-using Plugin.Permissions.Abstractions;
+//using Plugin.Permissions.Abstractions;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -24,7 +24,7 @@ namespace NeedsApp.Core.ViewModels
         public MainViewModel(ILocationService locationService)
         {
             LocationService = locationService;
-            Permissions = Mvx.Resolve<IPermissions>();
+            //Permissions = Mvx.Resolve<IPermissions>();
         }
 
         [PropertyChanged.AlsoNotifyFor(nameof(Latitude), nameof(Longitude))]
@@ -40,7 +40,7 @@ namespace NeedsApp.Core.ViewModels
             }
         }
 
-        public IPermissions Permissions { get; private set; }
+        //public IPermissions Permissions { get; private set; }
 
         private int locationSearchTimeOut = 10000;
         private CancellationTokenSource CancellationTokenSource = null;
