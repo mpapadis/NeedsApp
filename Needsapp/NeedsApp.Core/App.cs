@@ -19,7 +19,7 @@ namespace NeedsApp.Core
                 .AsTypes()
                 .RegisterAsLazySingleton();
 
-            if (Device.OS == TargetPlatform.Android || Device.OS == TargetPlatform.iOS)
+            if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 Resources.AppResources.Culture = Mvx.Resolve<Services.ILocalizeService>().GetCurrentCultureInfo();
             }

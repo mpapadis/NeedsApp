@@ -13,7 +13,7 @@ namespace NeedsApp.Core.Resources
 
         public TranslateExtension()
         {
-            if (Device.OS == TargetPlatform.Android || Device.OS == TargetPlatform.iOS)
+            if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 _cultureInfo = Mvx.Resolve<Services.ILocalizeService>().GetCurrentCultureInfo();
             }
