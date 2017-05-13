@@ -25,7 +25,7 @@ namespace NeedsApp.Core.ViewModels
 
         private Spot _spot;
 
-        public Spot Spot { get => _spot; set => _spot = value; }
+        public Spot Spot { get { return _spot; } set { _spot = value; } }
 
         public SpotViewModel(ILocationService locationService)
         {
