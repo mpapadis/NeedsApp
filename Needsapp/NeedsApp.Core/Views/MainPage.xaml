@@ -12,7 +12,7 @@
             <Label Text="{Binding Latitude}"/>
             <Label Text="{Binding Longitude}"/>
             <Button Text="My stations" Command="{Binding ViewSpotListCommand}"/>
-            <Button Text="View Spot" Command="{Binding ViewSpotCommand}" IsVisible="False"/>
+            <Button Text="View Spot" Command="{Binding ViewSpotCommand}" IsVisible="True"/>
         </StackLayout>
         <ContentView x:Name="actIndBackground"
                                 BackgroundColor="Black" Opacity="0.5"

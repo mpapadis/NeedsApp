@@ -29,6 +29,25 @@ namespace Web.Needsa.Controllers
             return _db.ArduinoStations.ToList();
         }
 
+
+        // GET: api/Variables
+        [HttpGet]
+        [Route("GetVariables")]
+        public IEnumerable<Variable> GetVariables()
+        {
+            return _db.Variables.ToList();
+        }
+
+
+        // GET: api/Variables
+        [HttpGet]
+        [Route("ArduinoStationVariables/{stationid}")]
+        public IEnumerable<ArduinoStationVariable> ArduinoStationVariables(int stationid)
+        {
+            return _db.ArduinoStationVariables.Where(x=>x.ArduinoStationId == stationid).ToList();
+        }
+
+
         // POST: api/ArduinoStations/OpenCloseCommand
         [HttpPost]
         [Route("OpenCloseCommand")]

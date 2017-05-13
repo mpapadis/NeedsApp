@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Web.Needsa.Data;
 using Web.Needsa.Models.Db;
+using Web.Needsa.Models.Dto;
 
 namespace Web.Needsa.Services
 {
     public static class StupidShedulerTimerService
     {
         private static Thread thread;
-        private static int TimeSpan = 1000 * 30; //every 30 seconds
+        private static int TimeSpan = 1000 * 10; //every 10 seconds
         private static Timer timer;
         private static IServiceProvider _serviceProvider;
 
@@ -34,7 +35,7 @@ namespace Web.Needsa.Services
         private static void OnCallBack()
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite); //stops the timer
-            Thread.Sleep(3000); //doing some long operation
+            //Thread.Sleep(3000); //doing some long operation
             ApplicationDbContext db = (ApplicationDbContext)_serviceProvider.GetService(typeof(ApplicationDbContext));
             var lstArduinoStations = db.ArduinoStations.ToList();
             foreach (var arduinoStation in lstArduinoStations)
@@ -65,6 +66,26 @@ namespace Web.Needsa.Services
                                 vv.ValueCaptured = decimal.Parse(keyVallue[1], CultureInfo.InvariantCulture);
                                 db.ArduinoStationVariables.Add(vv);
                                 db.SaveChanges();
+
+                                //edw mporoume na kanoume entoles me tin igrasia
+                                if(vv.VariableId == 5)
+                                {
+                                    //var avg = db.ArduinoStationVariables.Where(x=>x.VariableId == 5).Take(2).Select(x=>x.ValueCaptured).Average(x=>x);
+                                    //teleutees kapies
+                                    //if (avg < 10)
+                                    //{
+                                    //    //xamila ara anoikse
+                                    //}
+                                    //else 
+                                    if (vv.ValueCaptured > 100)
+                                    {
+                                        //ipsila  ara kleise
+                                        var arduinoService = new ArduinoService(db);
+                                        var openCloseCommandDto = new OpenCloseCommandDto() { StationId = arduinoStation.Id, StationStatus = false };
+                                        var aa = arduinoService.SendOpenCLoseCommand(openCloseCommandDto).Result;
+                                    }
+                                }
+
                             }
                             Console.WriteLine(result.Substring(0, 50) + "...");
                         }

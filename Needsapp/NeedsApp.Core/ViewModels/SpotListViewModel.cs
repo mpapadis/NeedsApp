@@ -28,7 +28,7 @@ namespace NeedsApp.Core.ViewModels
 
         public void Init()
         {
-           // LoadData().Wait();
+            LoadData().Wait();
         }
 
 
