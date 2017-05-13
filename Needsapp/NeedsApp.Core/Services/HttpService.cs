@@ -24,13 +24,16 @@ namespace NeedsApp.Core.Services
             var uri = new Uri(serviceUrl + "ArduinoStations");
             try
             {
-                var rsp = await httpClient.GetAsync(uri);
+                var rsp =  httpClient.GetAsync(uri).Result;
                 var cnt = await rsp.Content.ReadAsStringAsync();
                 var lst = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ArduinoStation>>(cnt);
                 return lst;
             }
-            catch (Exception)
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
+                
                 return null;
             }
         }

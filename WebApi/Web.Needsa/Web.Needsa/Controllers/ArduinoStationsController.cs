@@ -39,13 +39,20 @@ namespace Web.Needsa.Controllers
             return true;
         }
 
-        // GET: api/ArduinoStations/[dsadasdd]
-        [HttpGet("{stringArray}", Name = "Get")]
-        public string Get(string stringArray)
+        //// GET: api/ArduinoStations/[dsadasdd]
+        //[HttpGet("{stringArray}", Name = "Get")]
+        //public string Get(string stringArray)
+        //{
+        //    return "value";
+        //}
+
+
+        // GET: api/ArduinoStations/1
+        [HttpGet("{id}", Name = "Get")]
+        public ArduinoStation Get(int id)
         {
-            return "value";
+            return _db.ArduinoStations.FirstOrDefault(x => x.Id == id);
         }
-        
         
         // PUT: api/ArduinoStations/5
         [HttpPut("{id}")]

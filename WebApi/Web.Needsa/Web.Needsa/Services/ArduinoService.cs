@@ -21,7 +21,9 @@ namespace Web.Needsa.Services
         {
             bool waterStatus = openCloseCommandDto.StationStatus;
             var arduinoStation = _db.ArduinoStations.FirstOrDefault(x => x.Id == openCloseCommandDto.StationId);
-            if (arduinoStation.WaterStatus != waterStatus)
+            //if (arduinoStation.WaterStatus != waterStatus)
+            //{
+            try
             {
                 arduinoStation.WaterStatus = waterStatus;
                 _db.SaveChanges();
@@ -36,20 +38,27 @@ namespace Web.Needsa.Services
                     urlWaterCommand = $"{arduinoStation.Uri}wateroff/";
                 }
                 using (HttpClient client = new HttpClient())
-                    using (HttpResponseMessage response = await client.GetAsync(urlWaterCommand))
-                        using (HttpContent content = response.Content)
-                        {
-                            // ... Read the string.
-                            string result = await content.ReadAsStringAsync();
+                using (HttpResponseMessage response = await client.GetAsync(urlWaterCommand))
+                using (HttpContent content = response.Content)
+                {
+                    // ... Read the string.
+                    string result = await content.ReadAsStringAsync();
 
-                            // ... Display the result.
-                            if (result != null &&
-                                result.Length >= 50)
-                            {
-                                Console.WriteLine(result.Substring(0, 50) + "...");
-                            }
-                        }
+                    // ... Display the result.
+                    if (result != null &&
+                        result.Length >= 50)
+                    {
+                        Console.WriteLine(result.Substring(0, 50) + "...");
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+                
+            //}
 
             return true;
         }
