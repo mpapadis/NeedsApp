@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{25141529-3407-4826-83EA-14634D66A95E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{25141529-3407-4826-83EA-14634D66A95E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeedsApp.Core", "NeedsApp\NeedsApp.Core\NeedsApp.Core.csproj", "{74043E51-EF7B-4CE1-AF3F-7612ED1D05B6}"
 EndProject
@@ -33,6 +33,28 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RestClient", "RestClient", "{2245061F-1D8E-43CA-99A5-3DE602AAA093}"
 	ProjectSection(SolutionItems) = preProject
 		Arduino\tests\RestClient\RestClient.ino = Arduino\tests\RestClient\RestClient.ino
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSite", "WebSite", "{934D7943-81BD-485A-B330-E50ECF247C27}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "WebSite\", "{C41B2405-CB21-4E04-821A-05DAB1CDC722}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62677"
+		Debug.AspNetCompiler.PhysicalPath = "WebSite\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62677\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62677"
+		Release.AspNetCompiler.PhysicalPath = "WebSite\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62677\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62677"
 	EndProjectSection
 EndProject
 Global
@@ -419,6 +441,54 @@ Global
 		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x64.Build.0 = Release|Any CPU
 		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x86.ActiveCfg = Release|Any CPU
 		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x86.Build.0 = Release|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|x64.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.AppStore|x86.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|x64.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Debug|x86.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|ARM.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|ARM.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|iPhone.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|iPhone.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|x64.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|x64.Build.0 = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|x86.ActiveCfg = Debug|Any CPU
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -433,5 +503,6 @@ Global
 		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E} = {352EE957-9B6B-4B79-8E19-3F5F24149B2F}
 		{B9BF10D9-9BAC-483C-A0B4-614E8DC774F4} = {E21B8951-5CE5-4263-A87A-20A83B9B98BE}
 		{2245061F-1D8E-43CA-99A5-3DE602AAA093} = {B9BF10D9-9BAC-483C-A0B4-614E8DC774F4}
+		{C41B2405-CB21-4E04-821A-05DAB1CDC722} = {934D7943-81BD-485A-B330-E50ECF247C27}
 	EndGlobalSection
 EndGlobal
