@@ -13,7 +13,7 @@ namespace Web.Needsa.Services
     public static class StupidShedulerTimerService
     {
         private static Thread thread;
-        private static int TimeSpan = 1000 * 30; //every 10 seconds
+        private static int TimeSpan = 1000 * 30; //every 30 seconds
         private static Timer timer;
         private static IServiceProvider _serviceProvider;
 

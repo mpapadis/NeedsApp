@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Needsa.Data;
 using Web.Needsa.Models.Db;
+using Web.Needsa.Models.Dto;
+using Web.Needsa.Services;
 
 namespace Web.Needsa.Controllers
 {
@@ -22,9 +24,19 @@ namespace Web.Needsa.Controllers
 
         // GET: api/ArduinoStations
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ArduinoStation> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _db.ArduinoStations.ToList();
+        }
+
+        // POST: api/ArduinoStations/OpenCloseCommand
+        [HttpPost]
+        [Route("OpenCloseCommand")]
+        public async Task<bool> Post([FromBody]OpenCloseCommandDto openCloseCommandDto)
+        {
+            var arduinoService = new ArduinoService(_db);
+            await arduinoService.SendOpenCLoseCommand(openCloseCommandDto);
+            return true;
         }
 
         // GET: api/ArduinoStations/[dsadasdd]
@@ -34,11 +46,6 @@ namespace Web.Needsa.Controllers
             return "value";
         }
         
-        // POST: api/ArduinoStations
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
         
         // PUT: api/ArduinoStations/5
         [HttpPut("{id}")]

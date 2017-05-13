@@ -109,7 +109,7 @@ namespace NeedsApp.Core.ViewModels
                     
                     await Task.Run(() =>
                     {
-                        ShowViewModel<SpotViewModel>(new SpotViewModel.NavigationParams() { id = null });
+                        ShowViewModel<SpotViewModel>(new SpotViewModel.NavigationParams() { id = 1 });
                         Task.Delay(300).Wait();
                         Device.BeginInvokeOnMainThread(() => IsBusy = false);
                     });

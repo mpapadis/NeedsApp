@@ -23,19 +23,27 @@ namespace NeedsApp.Core.ViewModels
             set { _locationService = value; }
         }
 
-        private Spot _spot;
+        private IHttpService _httpService;
+        public IHttpService HttpService {
+            get { return _httpService; }
+            set { _httpService = value; }
+        }
 
-        public Spot Spot { get { return _spot; } set { _spot = value; } }
+        private ArduinoStation _arduinoStation;
 
-        public SpotViewModel(ILocationService locationService)
+        public ArduinoStation ArduinoStation { get { return _arduinoStation; } set { _arduinoStation = value; } }
+
+        public SpotViewModel(ILocationService locationService, IHttpService httpService)
         {
             LocationService = locationService;
+            HttpService = httpService;
+
         }
-        private int? _spotID;
+        private int? _arduinoStationID;
 
         public void Init(NavigationParams navigation)
         {
-            _spotID = navigation.id;
+            _arduinoStationID = navigation.id;
             init();
         }
 
@@ -110,10 +118,10 @@ namespace NeedsApp.Core.ViewModels
         [PropertyChanged.AlsoNotifyFor(nameof(Title))]
         public String SpotName {
             get {
-                return Spot?.Title ?? string.Empty;
+                return ArduinoStation?.Description ?? string.Empty;
             }
             set {
-                Spot.Title = value;
+                ArduinoStation.Description = value;
 
                 //if (SaveDataCommand != null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
@@ -123,38 +131,38 @@ namespace NeedsApp.Core.ViewModels
         }
 
 
-        public int Sensors {
-            get {
-                return Spot?.Sensors ?? 0;
-            }
-        }
+        //public int Sensors {
+        //    get {
+        //        return ArduinoStation?.Sensors ?? 0;
+        //    }
+        //}
         
-        public string IsAccessibleString {
-            get {
-                if (IsAccessible)
-                    return "Συνδέθηκε";
-                else
-                    return "Δεν βρέθηκε!";
-            }
-        }
+        //public string IsAccessibleString {
+        //    get {
+        //        if (IsAccessible)
+        //            return "Συνδέθηκε";
+        //        else
+        //            return "Δεν βρέθηκε!";
+        //    }
+        //}
 
 
-        public bool IsAccessible {
-            get { return Spot?.Accessible ?? false; }
-        }
+        //public bool IsAccessible {
+        //    get { return ArduinoStation?.Accessible ?? false; }
+        //}
 
 
-        public Spot.Status WaterStatus {
-            get { return Spot?.WaterStatus ?? Spot.Status.closed; }
+        public bool WaterStatus {
+            get { return ArduinoStation?.WaterStatus ?? false; }
         }
 
         public string WaterStatusString {
             get {
-                if (WaterStatus == Spot.Status.open)
+                if (WaterStatus == true)
                 {
                     return "Ανοικτό";
                 }
-                else if (WaterStatus == Spot.Status.closed)
+                else if (WaterStatus == false)
                 {
                     return "Κλειστό";
                 }
@@ -169,10 +177,38 @@ namespace NeedsApp.Core.ViewModels
         [PropertyChanged.AlsoNotifyFor(nameof(SpotLongitude), nameof(SpotLatitude))]
         public Position SpotLocation {
             get {
-                return Spot?.Position;
+                Position p = null;
+                if(!String.IsNullOrEmpty(ArduinoStation.Location))
+                {
+                    try
+                    {
+                        var ar = ArduinoStation.Location.Split(',').ToArray<string>();
+                        if (ar!=null && ar.AsEnumerable<string>().Count() == 2)
+                        {
+                            double lat;
+                            double lng;
+                            if (double.TryParse(ar[0], out lat) && double.TryParse(ar[1], out lng))
+                                p = new Position() { Latitude = lat, Longitude = lng};
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                    
+                }
+                return p;
             }
             set {
-                Spot.Position = value;
+                if (value != null)
+                {
+                    var s = value.Latitude.ToString() + ", " + value.Longitude.ToString();
+                    ArduinoStation.Location = s;
+                }
+                else
+                { ArduinoStation.Location = string.Empty; }
+                
                 //if (SaveDataCommand!=null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
             }
@@ -181,13 +217,13 @@ namespace NeedsApp.Core.ViewModels
 
         public string SpotLongitude {
             get {
-                return Spot?.Position?.Longitude?.ToString() ?? string.Empty;
+                return SpotLocation?.Longitude?.ToString() ?? string.Empty;
             }
         }
 
         public string SpotLatitude {
             get {
-                return Spot?.Position?.Latitude?.ToString() ?? string.Empty;
+                return SpotLocation?.Latitude?.ToString() ?? string.Empty;
             }
         }
 
@@ -206,9 +242,18 @@ namespace NeedsApp.Core.ViewModels
             IsBusy = true;
             try
             {
-                if (_spotID == null || !_spotID.HasValue || _spotID.Value == 0)
+                if (_arduinoStationID == null || !_arduinoStationID.HasValue || _arduinoStationID.Value == 0)
                 {
-                    Spot =  new Spot() { ID = 0, Title = "arduino1", Position = null , WaterStatus=Spot.Status.closed, Accessible = true, Sensors = 5};
+                    ArduinoStation = new ArduinoStation() { Id = 0, Description = "arduino 1", Location = "37.973555, 23.680971", WaterStatus = false };
+                }
+                else
+                {
+                    var lst = await HttpService.GetArduinoStationList();
+                    if (lst != null )
+                    {
+                        ArduinoStation = lst.FirstOrDefault(x => x.Id == _arduinoStationID.Value);
+                        RaiseAllPropertiesChanged();
+                    }
                 }
 
             }
@@ -269,7 +314,7 @@ namespace NeedsApp.Core.ViewModels
 
         public ICommand StopWatering { get { return new MvxAsyncCommand(async () => await ToggleWateringAsync(false)); } }
 
-        public async Task ToggleWateringAsync(bool start)
+        public async Task ToggleWateringAsync(bool status)
         {
             if (IsBusy) return;
 
@@ -278,18 +323,12 @@ namespace NeedsApp.Core.ViewModels
             try
             {
                 // api - start - stop
-                if (start)
-                {
-                    Spot.WaterStatus = Spot.Status.open; //replace with load data from api
+               
+                 ArduinoStation.WaterStatus = status; //replace with load data from api
 
-                }
-                else
-                {
-                    Spot.WaterStatus = Spot.Status.closed; //replace with load data from api
-                }
+                await HttpService.SendOpenCloseCommand(new OpenCloseCommandDto() { StationId = ArduinoStation.Id, StationStatus = status });
 
                 
-                await Task.Delay(300);
             }
             catch (Exception ex)
             {
@@ -319,7 +358,7 @@ namespace NeedsApp.Core.ViewModels
 
         public class NavigationParams 
             {
-            public int? id;
+            public int id { get; set; }
             }
     }
 }
