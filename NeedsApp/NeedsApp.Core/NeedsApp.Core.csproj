@@ -72,6 +72,9 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SpotListPage.xaml.cs">
+      <DependentUpon>SpotListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotPage.xaml.cs">
       <DependentUpon>SpotPage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\SpotPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SpotListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -11,7 +11,8 @@
             <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
             <Label Text="{Binding Latitude}"/>
             <Label Text="{Binding Longitude}"/>
-            <Button Text="View Spot" Command="{Binding ViewSpotCommand}"/>
+            <Button Text="My stations" Command="{Binding ViewSpotListCommand}"/>
+            <Button Text="View Spot" Command="{Binding ViewSpotCommand}" IsVisible="False"/>
         </StackLayout>
         <ContentView x:Name="actIndBackground"
                                 BackgroundColor="Black" Opacity="0.5"

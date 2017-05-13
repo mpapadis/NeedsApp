@@ -95,7 +95,25 @@ namespace NeedsApp.Core.ViewModels
             MyLocation = location;
         }
 
-        
+        ICommand _viewSpotListCommand;
+        public ICommand ViewSpotListCommand {
+            get {
+                if (IsBusy)
+                    return null;
+                _viewSpotListCommand = _viewSpotListCommand ?? new MvxAsyncCommand(async () =>
+                 {
+                     if (IsBusy) return;
+                     Device.BeginInvokeOnMainThread(() => IsBusy = true);
+                     await Task.Run(() =>
+                     {
+                         ShowViewModel<SpotListViewModel>();
+                         Task.Delay(300).Wait();
+                         Device.BeginInvokeOnMainThread(() => IsBusy = false);
+                     });
+                 });
+                return _viewSpotListCommand;
+            }
+        }
 
 
         ICommand _viewSpotCommand;
