@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{25141529-3407-4826-83EA-14634D66A95E}"
 EndProject
@@ -18,6 +18,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeedsApp.UITests", "NeedsApp\NeedsApp.UITests\NeedsApp.UITests.csproj", "{EB466A08-7DEE-401D-96A0-BC1E35308500}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeedsApp.UnitTests", "NeedsApp\NeedsApp.UnitTests\NeedsApp.UnitTests.csproj", "{63A3EE7F-E989-4F5B-AF2F-BF2D79E46D37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arduino", "Arduino", "{E21B8951-5CE5-4263-A87A-20A83B9B98BE}"
+	ProjectSection(SolutionItems) = preProject
+		Arduino\_01_SetWebServer\_01_SetWebServer.ino = Arduino\_01_SetWebServer\_01_SetWebServer.ino
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{352EE957-9B6B-4B79-8E19-3F5F24149B2F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Needsa", "WebApi\Web.Needsa\Web.Needsa\Web.Needsa.csproj", "{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B9BF10D9-9BAC-483C-A0B4-614E8DC774F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RestClient", "RestClient", "{2245061F-1D8E-43CA-99A5-3DE602AAA093}"
+	ProjectSection(SolutionItems) = preProject
+		Arduino\tests\RestClient\RestClient.ino = Arduino\tests\RestClient\RestClient.ino
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -355,6 +371,54 @@ Global
 		{63A3EE7F-E989-4F5B-AF2F-BF2D79E46D37}.Release|x64.Build.0 = Release|Any CPU
 		{63A3EE7F-E989-4F5B-AF2F-BF2D79E46D37}.Release|x86.ActiveCfg = Release|Any CPU
 		{63A3EE7F-E989-4F5B-AF2F-BF2D79E46D37}.Release|x86.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|x64.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.AppStore|x86.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|x64.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Debug|x86.Build.0 = Debug|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|ARM.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|iPhone.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x64.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x64.Build.0 = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x86.ActiveCfg = Release|Any CPU
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,5 +430,8 @@ Global
 		{51920CE3-3821-4AE3-AC7D-78E83B770A65} = {25141529-3407-4826-83EA-14634D66A95E}
 		{EB466A08-7DEE-401D-96A0-BC1E35308500} = {D9DF98F7-1F94-429A-9BC3-D522D81F2A5E}
 		{63A3EE7F-E989-4F5B-AF2F-BF2D79E46D37} = {D9DF98F7-1F94-429A-9BC3-D522D81F2A5E}
+		{B5A9BE80-0896-4494-AEA1-AA4C6F16A75E} = {352EE957-9B6B-4B79-8E19-3F5F24149B2F}
+		{B9BF10D9-9BAC-483C-A0B4-614E8DC774F4} = {E21B8951-5CE5-4263-A87A-20A83B9B98BE}
+		{2245061F-1D8E-43CA-99A5-3DE602AAA093} = {B9BF10D9-9BAC-483C-A0B4-614E8DC774F4}
 	EndGlobalSection
 EndGlobal

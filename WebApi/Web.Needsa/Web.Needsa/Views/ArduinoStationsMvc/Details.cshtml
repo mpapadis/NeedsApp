@@ -1,0 +1,40 @@
+@model Web.Needsa.Models.Db.ArduinoStation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ArduinoStation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Uri)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Uri)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=1">On</a>
+    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=0">Off</a>
+
+    waterStatus
+</div>
