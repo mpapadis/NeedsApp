@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeedsApp.Core.Views.SpotPage"
+             Title="{Binding Title}">
+  <ScrollView>
+    <StackLayout Padding="10" Orientation="Vertical">
+      <!--<Label Text="ContentPage" FontSize="40"/>
+      <Label Text="ContentPage is the simplest type of page."/>
+      <Label Text="The content of the ContentPage is generally a layout of some sort that can be a parent to multiple children."/>
+      <Label Text="This content page contains a StackLayout, which in turn contains a few Label views (including the large one on the top and an example of handling click commands and data binding to a Label below)."/>
+      <Button Text="Click Me" Command="{Binding IncreaseCountCommand}"/>
+      <Label Text="{Binding CountDisplay}"/>-->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Name:" WidthRequest="100"/>
+                <Entry Text="{Binding SpotName}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Latitude:" WidthRequest="100"/>
+                <Label Text="{Binding SpotLatitude}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Longitude:" WidthRequest="100"/>
+                <Label Text="{Binding SpotLongitude}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
+        </StackLayout>
+  </ScrollView>
+</ContentPage>

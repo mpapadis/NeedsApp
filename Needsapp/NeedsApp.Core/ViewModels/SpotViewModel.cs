@@ -14,7 +14,7 @@ using Xamarin.Forms;
 namespace NeedsApp.Core.ViewModels
 {
     [PropertyChanged.ImplementPropertyChanged]
-    public class SpotViewModel:BaseViewModel
+    public class SpotViewModel : BaseViewModel
     {
 
         private ILocationService _locationService;
@@ -30,9 +30,21 @@ namespace NeedsApp.Core.ViewModels
         public SpotViewModel(ILocationService locationService)
         {
             LocationService = locationService;
-            LoadDataCommand.Execute(null);
+        }
+        private int? _spotID;
+
+        public void Init(NavigationParams navigation)
+        {
+            _spotID = navigation.id;
+            init();
         }
 
+
+
+        private void init()
+        {
+           LoadDataAsync().Wait() ;
+        }
 
         public ICommand GetLocationCommand {
             get {
@@ -40,7 +52,6 @@ namespace NeedsApp.Core.ViewModels
             }
         }
 
-        //public IPermissions Permissions { get; private set; }
 
         private int locationSearchTimeOut = 10000;
         private CancellationTokenSource CancellationTokenSource = null;
@@ -95,11 +106,24 @@ namespace NeedsApp.Core.ViewModels
             SpotLocation = location;
         }
 
+
+        [PropertyChanged.AlsoNotifyFor(nameof(Title))]
         public String SpotName {
             get {
                 return Spot?.Name ?? string.Empty;
             }
+            set {
+                Spot.Name = value;
+
+                //if (SaveDataCommand != null && SaveDataCommand.CanExecute(this))
+                //    SaveDataCommand.Execute(this);
+                Title = value;
+                RaisePropertyChanged();
+            }
         }
+
+        
+
 
         [PropertyChanged.AlsoNotifyFor(nameof(SpotLongitude), nameof(SpotLatitude))]
         public Position SpotLocation {
@@ -108,10 +132,12 @@ namespace NeedsApp.Core.ViewModels
             }
             set {
                 Spot.SpotLocation = value;
+                //if (SaveDataCommand!=null && SaveDataCommand.CanExecute(this))
+                //    SaveDataCommand.Execute(this);
             }
         }
 
-        
+
         public string SpotLongitude {
             get {
                 return Spot?.SpotLocation?.Longitude?.ToString() ?? string.Empty;
@@ -125,43 +151,87 @@ namespace NeedsApp.Core.ViewModels
         }
 
 
-        public ICommand LoadDataCommand { get
-                {
+        public ICommand LoadDataCommand { get {
                 return new MvxAsyncCommand(LoadDataAsync);
-            }; } 
+            } }
 
-        private async Task LoadDataAsync()
+        private async Task  LoadDataAsync()
         {
+            if (IsBusy)
+                return;
+
+            Exception myEx = null;
+
             IsBusy = true;
             try
             {
-                //if (id == 0)
-                //{
-                    Spot = await Task.Run(() => new Spot() { ID = 10, Name = "arduino1", SpotLocation = null });
-                //}
+                if (_spotID == null || !_spotID.HasValue || _spotID.Value == 0)
+                {
+                    Spot =  new Spot() { ID = 10, Name = "arduino1", SpotLocation = null };
+                }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                myEx = ex;
+                //throw;
             }
             finally
             {
+                Device.BeginInvokeOnMainThread(() => IsBusy = false);
                 IsBusy = false;
             }
-           
 
+            if (myEx!=null)
+            {
+                try
+                {
+                    var p = new ContentPage();
+                    await p.DisplayAlert("Σφάλμα", myEx.Message, "ΟΚ");
+                }
+                catch (Exception ex)
+                {
+                    Mvx.Exception(ex.Message);
+                }
+            }
         }
 
+        private async Task SaveDataAsync()
+        {
+            Device.BeginInvokeOnMainThread(() => IsBusy = true);
+            Exception myEx = null;
 
-        public ICommand SetLocationCommand { get { return null; } }
+            try
+            {
+                await Task.Delay(300);
+            }
+            catch (Exception ex)
+            {
+                myEx = ex;
+                Mvx.Error(ex.Message);
+            }
+            finally
+            {
+                Device.BeginInvokeOnMainThread(() => IsBusy = false);
+            }
 
-        public ICommand SaveDataCommand { get { return null; } }
+            if (myEx != null)
+            {
+                var p = new ContentPage();
+                await p.DisplayAlert("Σφάλμα κατά την αποθήκευση", myEx.Message, "ΟΚ");
+            }
+        }
+
+        public ICommand SaveDataCommand { get { return new MvxAsyncCommand(SaveDataAsync); } }
 
         public ICommand StartWatering { get { return null; } }
 
         public ICommand StopWatering { get { return null; } }
 
+
+        public class NavigationParams 
+            {
+            public int? id;
+            }
     }
 }
