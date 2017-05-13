@@ -18,5 +18,8 @@
     }
 }
 
+.mapCont { overflow: hidden; }
 .mapCont, #map-canvas { height: 500px; min-height: 500px; width: 100%; }
 h3.screenTitle { margin: 20px 0; color: lblue; padding-bottom: 5px; border-bottom: 2px solid $lblue; }
+
+.infowindowtxt { font-size: 20px; }

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Happy Tree Friends - Admin</title>
+    <meta name="description" content="">
+    <meta name="author" content="NeedSA">
+
+    <link href="https://fonts.googleapis.com/css?family=Didact+Gothic&amp;subset=greek" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-all.min.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <section class="adminContainer">
+        <div class="row">
+            <div class="menuCont col-xs-12 col-sm-3">
+                <div class="logoCont">
+                    <div class="logoImg"><img src="./images/logo.png" alt="Happy Trees" /></div>
+                    <div class="logoTxt">Happy Trees</div>
+                </div>
+                <div class="menu">
+                    <nav>
+                        <a href="/admin.html" title="Χάρτες">Χάρτες</a>
+                        <!--<a href="/statistics.html" title="Στατιστικά">Στατιστικά</a>-->
+                        <a href="/" title="Αποσύνδεση">Αποσύνδεση</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="adminCont col-xs-12 col-sm-9">
+                <!--<div class="mapCont"><div id="map-canvas"></div></div>-->
+                <div class="areaInfoCont row">
+                    <div class="col-xs-12 col-sm-6">
+                        <h3 class="screenTitle">Πληροφορίες Σταθμού - <span class="customTitle"></span></h3>
+                        <div class="statusCont clearfix">
+                            <div class="stationStatus"></div>
+                            <div class="stationAccessibility"></div>
+                        </div>
+                        <div class="areaInfo"><strong>Υγρασία</strong>: <span class="areaInfoVal humidity"></span></div>
+                        <div class="areaInfo"><strong>Θερμοκρασία</strong>: <span class="areaInfoVal temperature"></span></div>
+                        <div class="areaInfo"><strong>pH</strong>: <span class="areaInfoVal ph"></span></div>
+
+                        <div id="chart_div"></div>
+                        <div id="checkrefresh"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 weather">
+                        <h3 class="screenTitle text-right">Ο Καιρός</h3>
+                        <div class="row">
+                            <div class="weatherCont col-xs-12 col-sm-6">
+                                <div class="weatherTitle">Σήμερα</div>
+                                <div class="icon"></div>
+                                <div class="weatherTxt text-center">
+                                    <div class="temp">Θερμοκρασία: <span class="tempC"></span><sup>o</sup> C</div>
+                                    <div class="temp">Υγρασία: <span class="humidityC"></span></div>
+                                    <div class="temp">Άνεμος Degrees: <span class="windDegr"></span></div>
+                                    <div class="temp">Άνεμος Kph: <span class="windKph"></span></div>
+                                </div>
+                            </div>
+                            <div class="weatherCont col-xs-12 col-sm-6">
+                                <div class="weatherPrediction text-right">
+                                    <div class="weatherTitle">Αύριο</div>
+                                    <div class="temp">Θερμοκρασία: <span class="tempC_1"></span><sup>o</sup> C</div>
+                                    <div class="temp">Υγρασία: <span class="humidityC_1"></span></div>
+                                    <div class="temp">Άνεμος Kph: <span class="windKph_1"></span></div>
+                                </div>
+                                <div class="weatherPrediction text-right">
+                                    <div class="weatherTitle title_2"></div>
+                                    <div class="temp">Θερμοκρασία: <span class="tempC_2"></span><sup>o</sup> C</div>
+                                    <div class="temp">Υγρασία: <span class="humidityC_2"></span></div>
+                                    <div class="temp">Άνεμος Kph: <span class="windKph_2"></span></div>
+                                </div>
+                                <div class="weatherPrediction text-right">
+                                    <div class="weatherTitle title_3"></div>
+                                    <div class="temp">Θερμοκρασία: <span class="tempC_3"></span><sup>o</sup> C</div>
+                                    <div class="temp">Υγρασία: <span class="humidityC_3"></span></div>
+                                    <div class="temp">Άνεμος Kph: <span class="windKph_3"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--<script src="https://maps.googleapis.com/maps/api/js?keyAIzaSyB7EoqurIVwKlcxRl7uuBkm02IQf2jJ6jI"></script>-->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFp_hI0sehFCyzZr_oDlVW0TMQltluCTo"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/arduino-all.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LoadWeatherApi();
+            var areaId = getUrlParameter('area');
+            $('.customTitle').text(areasArray[areaId].title);
+            if(areasArray[areaId].status == "open") {
+                $('.stationStatus').addClass('ok');
+                $('.stationStatus').html("Ανοιχτός");
+            } else {
+                $('.stationStatus').html("Κλειστός");
+            }
+
+            if(areasArray[areaId].accessible == "true") {
+                $('.stationAccessibility').addClass('ok');
+                $('.stationAccessibility').html('Σύνδεση <i class="fa fa-wifi" aria-hidden="true"></i>');
+            } else {
+                $('.stationAccessibility').html('Σύνδεση <span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x text-danger"></i></span>');
+            }
+            
+            $('.humidity').text(areasArray[areaId].humidity);
+            $('.temperature').text(areasArray[areaId].temperature);
+            $('.ph').text(areasArray[areaId].ph);
+
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            /*$.ajax({
+                type: "get",
+                url: "http://192.168.0.82/api/ArduinoStations",
+                success: function (response) {
+                    console.log(response);
+                }
+            });*/
+        });
+    </script>
+</body>
+</html>
