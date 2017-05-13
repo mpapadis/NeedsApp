@@ -1,0 +1,22 @@
+.menuCont { background-color: $blue; color: $white; min-height: 100vh; /*position: fixed;*/ }
+
+.menu {
+    a {
+        display: block;
+        padding: 10px 5px 10px 20px;
+        border-left: 2px solid $lgray;
+        font-size: 20px;
+        color: $white;
+        background-color: transparent;
+        transition: background-color 0.3s ease-in;
+        &:hover {
+            background-color: $lblue;
+            border-left: 2px solid $blue;
+            color: $white;
+            text-decoration: none;
+        } 
+    }
+}
+
+.mapCont, #map-canvas { height: 500px; min-height: 500px; width: 100%; }
+h3.screenTitle { margin: 20px 0; color: lblue; padding-bottom: 5px; border-bottom: 2px solid $lblue; }

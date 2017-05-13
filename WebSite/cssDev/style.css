@@ -1,0 +1,73 @@
+body {
+  font-size: 15px;
+  font-family: "Didact Gothic", sans-serif;
+  color: #333333;
+  background-color: #D2D7D3; }
+
+a, a:hover, a:focus {
+  outline: none; }
+
+.logoCont {
+  text-align: center;
+  margin: 20px 0; }
+  .logoCont .logoImg {
+    display: block; }
+  .logoCont .logoTxt {
+    font-size: 35px; }
+
+.loginCont {
+  text-align: center;
+  background-color: #34495E;
+  max-width: 500px;
+  padding: 15px;
+  margin: 0 auto; }
+  .loginCont .form-group {
+    display: block; }
+  .loginCont input {
+    border-radius: 0;
+    border: 0 none; }
+  .loginCont button[type="submit"], .loginCont .btn {
+    border-radius: 0;
+    border: 0 none;
+    background-color: #00BFC0;
+    color: #ffffff;
+    transition: background-color 0.3s ease-in;
+    padding: .5rem 3rem;
+    font-size: 18px;
+    font-weight: 600; }
+    .loginCont button[type="submit"]:hover, .loginCont .btn:hover {
+      background-color: #B25900;
+      color: #ffffff; }
+
+.menuCont {
+  background-color: #34495E;
+  color: #ffffff;
+  min-height: 100vh;
+  /*position: fixed;*/ }
+
+.menu a {
+  display: block;
+  padding: 10px 5px 10px 20px;
+  border-left: 2px solid #D2D7D3;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: transparent;
+  transition: background-color 0.3s ease-in; }
+  .menu a:hover {
+    background-color: #00BFC0;
+    border-left: 2px solid #34495E;
+    color: #ffffff;
+    text-decoration: none; }
+
+.mapCont, #map-canvas {
+  height: 500px;
+  min-height: 500px;
+  width: 100%; }
+
+h3.screenTitle {
+  margin: 20px 0;
+  color: lblue;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #00BFC0; }
+
+/*# sourceMappingURL=style.css.map */

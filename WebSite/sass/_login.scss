@@ -1,0 +1,27 @@
+.logoCont {
+    text-align: center; margin: 20px 0;
+    .logoImg { display: block; }
+    .logoTxt { font-size: 35px; }
+}
+
+.loginCont {
+    text-align: center;
+    background-color: $blue;
+    max-width: 500px;
+    padding: 15px; margin: 0 auto;
+    .form-group { display: block; }
+    input {
+        border-radius: 0;
+        border: 0 none;
+    }
+    button[type="submit"], .btn {
+        border-radius: 0;
+        border: 0 none;
+        background-color: $lblue;
+        color: $white;
+        transition: background-color 0.3s ease-in;
+        padding: .5rem 3rem;
+        font-size: 18px; font-weight: 600;
+        &:hover { background-color: $brown; color: $white; }
+    }
+}

@@ -1,0 +1,17 @@
+$fontfamily: 'Didact Gothic', sans-serif;
+$blue: #34495E;
+$lblue: #00BFC0;
+$green: #87D37C;
+$dgray: #333333;
+$lgray: #D2D7D3;
+$white: #ffffff;
+$brown: #B25900;
+
+
+body {
+    font-size: 15px; font-family: $fontfamily;
+    color: $dgray;
+    background-color: $lgray;
+}
+
+a, a:hover, a:focus { outline: none; }
