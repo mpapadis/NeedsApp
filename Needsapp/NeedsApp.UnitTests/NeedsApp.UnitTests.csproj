@@ -68,7 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NeedsApp.Core\NeedsApp.Core.csproj">
       <Project>{74043e51-ef7b-4ce1-af3f-7612ed1d05b6}</Project>
-      <Name>XamForms.MvxTemplate.Core</Name>
+      <Name>NeedsApp.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -61,11 +61,11 @@
   <ItemGroup>
     <ProjectReference Include="..\NeedsApp.Droid\NeedsApp.Droid.csproj">
       <Project>{48d8dcc6-6342-4a62-ab87-b26cbfb3feb1}</Project>
-      <Name>XamForms.MvxTemplate.Droid</Name>
+      <Name>NeedsApp.Droid</Name>
     </ProjectReference>
     <ProjectReference Include="..\NeedsApp.iOS\NeedsApp.iOS.csproj">
       <Project>{88a375c3-8567-47b7-a040-cf48b7049986}</Project>
-      <Name>XamForms.MvxTemplate.iOS</Name>
+      <Name>NeedsApp.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
