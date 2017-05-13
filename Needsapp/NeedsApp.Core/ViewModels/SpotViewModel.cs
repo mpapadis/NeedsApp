@@ -110,10 +110,10 @@ namespace NeedsApp.Core.ViewModels
         [PropertyChanged.AlsoNotifyFor(nameof(Title))]
         public String SpotName {
             get {
-                return Spot?.Name ?? string.Empty;
+                return Spot?.Title ?? string.Empty;
             }
             set {
-                Spot.Name = value;
+                Spot.Title = value;
 
                 //if (SaveDataCommand != null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
@@ -122,16 +122,57 @@ namespace NeedsApp.Core.ViewModels
             }
         }
 
+
+        public int Sensors {
+            get {
+                return Spot?.Sensors ?? 0;
+            }
+        }
         
+        public string IsAccessibleString {
+            get {
+                if (IsAccessible)
+                    return "Συνδέθηκε";
+                else
+                    return "Δεν βρέθηκε!";
+            }
+        }
+
+
+        public bool IsAccessible {
+            get { return Spot?.Accessible ?? false; }
+        }
+
+
+        public Spot.Status WaterStatus {
+            get { return Spot?.WaterStatus ?? Spot.Status.closed; }
+        }
+
+        public string WaterStatusString {
+            get {
+                if (WaterStatus == Spot.Status.open)
+                {
+                    return "Ανοικτό";
+                }
+                else if (WaterStatus == Spot.Status.closed)
+                {
+                    return "Κλειστό";
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
 
 
         [PropertyChanged.AlsoNotifyFor(nameof(SpotLongitude), nameof(SpotLatitude))]
         public Position SpotLocation {
             get {
-                return Spot?.SpotLocation;
+                return Spot?.Position;
             }
             set {
-                Spot.SpotLocation = value;
+                Spot.Position = value;
                 //if (SaveDataCommand!=null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
             }
@@ -140,13 +181,13 @@ namespace NeedsApp.Core.ViewModels
 
         public string SpotLongitude {
             get {
-                return Spot?.SpotLocation?.Longitude?.ToString() ?? string.Empty;
+                return Spot?.Position?.Longitude?.ToString() ?? string.Empty;
             }
         }
 
         public string SpotLatitude {
             get {
-                return Spot?.SpotLocation?.Latitude?.ToString() ?? string.Empty;
+                return Spot?.Position?.Latitude?.ToString() ?? string.Empty;
             }
         }
 
@@ -167,7 +208,7 @@ namespace NeedsApp.Core.ViewModels
             {
                 if (_spotID == null || !_spotID.HasValue || _spotID.Value == 0)
                 {
-                    Spot =  new Spot() { ID = 10, Name = "arduino1", SpotLocation = null };
+                    Spot =  new Spot() { ID = 0, Title = "arduino1", Position = null , WaterStatus=Spot.Status.closed, Accessible = true, Sensors = 5};
                 }
 
             }
