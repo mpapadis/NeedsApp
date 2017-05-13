@@ -265,9 +265,56 @@ namespace NeedsApp.Core.ViewModels
 
         public ICommand SaveDataCommand { get { return new MvxAsyncCommand(SaveDataAsync); } }
 
-        public ICommand StartWatering { get { return null; } }
+        public ICommand StartWatering { get { return new MvxAsyncCommand(async() => await ToggleWateringAsync(true)); } }
 
-        public ICommand StopWatering { get { return null; } }
+        public ICommand StopWatering { get { return new MvxAsyncCommand(async () => await ToggleWateringAsync(false)); } }
+
+        public async Task ToggleWateringAsync(bool start)
+        {
+            if (IsBusy) return;
+
+            Device.BeginInvokeOnMainThread(() => IsBusy = true);
+            Exception myEx = null;
+            try
+            {
+                // api - start - stop
+                if (start)
+                {
+                    Spot.WaterStatus = Spot.Status.open; //replace with load data from api
+
+                }
+                else
+                {
+                    Spot.WaterStatus = Spot.Status.closed; //replace with load data from api
+                }
+
+                
+                await Task.Delay(300);
+            }
+            catch (Exception ex)
+            {
+                myEx = ex;
+                Mvx.Error(ex.Message);
+            }
+            finally
+            {
+                Device.BeginInvokeOnMainThread(() => IsBusy = false);
+            }
+
+            if (myEx!= null)
+            {
+                try
+                {
+                    var p = new ContentPage();
+                    await p.DisplayAlert("Σφάλμα", myEx.Message, "ΟΚ");
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
 
 
         public class NavigationParams 
