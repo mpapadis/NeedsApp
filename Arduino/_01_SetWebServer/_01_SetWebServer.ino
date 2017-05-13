@@ -1,4 +1,4 @@
-// http://<IP>/arduino/webserver/
+// http://<IP>/arduino/webserver/ ss
 #include <Wire.h>
 #include <UnoWiFiDevEd.h>
 
@@ -85,9 +85,12 @@ void process(WifiData client) {
   Serial.println(command);
   if (command == "sensorsdata") {
     GetSensorsData(client);
-  } else if (command == "sensorsdatasend") {
-
-    GetSensorsData(client);
+  } else if (command == "wateron") {
+    digitalWrite(13, HIGH);
+	  GetEmptyRequest(client, "<html><body>ON</body></html>");
+  } else if (command == "wateroff") {
+    digitalWrite(13, LOW);
+	  GetEmptyRequest(client, "<html><body>OFF</body></html>");
   }
   //else{
   //  GetEmptyRequest(client);
@@ -115,13 +118,13 @@ void SendSensorsData( ) {
   }
 }
 
-void GetEmptyRequest(WifiData responseWifiData) {
+void GetEmptyRequest(WifiData responseWifiData, String html) {
   responseWifiData.println("HTTP/1.1 200 OK");
   responseWifiData.println("Content-Type: text/html");
   responseWifiData.println("Connection: close");
   //client.println("Refresh: 20");  // refresh the page automatically every  sec
   responseWifiData.println();
-  responseWifiData.println("<html><body>no request selected</body></html>");
+  responseWifiData.println(html);
   responseWifiData.print(DELIMITER);
 }
 
