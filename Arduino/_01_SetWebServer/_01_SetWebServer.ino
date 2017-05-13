@@ -29,12 +29,14 @@ void loop() {
     process(Wifi);
   }
   delay(1000);
-
+  //Serial.println("call SendSensorsData");
+  //SendSensorsData();
+  //delay(5000);
   // Serial.println("Humidity");
   // Serial.println((analogRead(0) - 1024) * -1 > 250);
 
-  gv = getValues();
-  Serial.println(gv);
+  //gv = getValues();
+  //Serial.println(gv);
   /*
     if ((analogRead(0) - 1024) * -1> 250) {
       digitalWrite(13, LOW);
@@ -44,7 +46,6 @@ void loop() {
       Serial.println("HIGH");
     }
     delay(1000);*/
-
 }
 
 
@@ -73,8 +74,10 @@ String getValues() {
     }
   }
   rtn = humidity + temp;
-  return rtn;
+  
+  //Serial.println("getValues");
   //Serial.println(rtn);
+  return rtn;
 }
 
 void process(WifiData client) {
@@ -85,7 +88,13 @@ void process(WifiData client) {
   Serial.println(command);
   if (command == "sensorsdata") {
     GetSensorsData(client);
-  } else if (command == "wateron") {
+  } else if (command == "getsensorsdata") {
+    String head = "<html><body>";
+    String foot = "</body></html>";
+    String strValues = getValues();
+    String allStrs = head + strValues + foot;
+    GetEmptyRequest(client, allStrs);
+  }else if (command == "wateron") {
     digitalWrite(13, HIGH);
 	  GetEmptyRequest(client, "<html><body>ON</body></html>");
   } else if (command == "wateroff") {
@@ -97,16 +106,26 @@ void process(WifiData client) {
   //}
 }
 
-void SendSensorsData( ) {
+void SendSensorsData() {
 
   String sensorsDataArray = getValues();
+  Serial.println("SendSensorsData");
+  Serial.println(sensorsDataArray);
   const char* connector = "rest";
   const char* server = "10.0.0.116";
-  const char* command = "/api/ArduinoStations/[{1:4},{2:6}]";
   const char* method = "GET";
+  String command = "/api/ArduinoStations/";
+  String command2 = command + sensorsDataArray;
+  Serial.println(command2);
+  /*char command3[100];
+  command2.toCharArray(command3, 100);
+  //char* command3 = command2.toCharArray();
+  Serial.println(command3);
+  */
+  const char* commandArray = "/api/ArduinoStations/{5:5.00},{3:36.13},";
 
-  CiaoData data = Ciao.write(connector, server, command, method);
-  if (!data.isEmpty()) {
+  CiaoData data = Ciao.write(connector, server, commandArray, method);
+  /*if (!data.isEmpty()) {
     Ciao.println( "State: " + String (data.get(1)) );
     Ciao.println( "Response: " + String (data.get(2)) );
     Serial.println( "State: " + String (data.get(1)) );
@@ -116,6 +135,7 @@ void SendSensorsData( ) {
     Ciao.println ("Write Error");
     Serial.println ("Write Error");
   }
+  */
 }
 
 void GetEmptyRequest(WifiData responseWifiData, String html) {

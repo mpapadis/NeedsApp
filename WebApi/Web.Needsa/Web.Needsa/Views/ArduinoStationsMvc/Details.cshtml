@@ -28,13 +28,26 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WaterStatus)
+        </dt>
+        <dd>
+            @if (Model.WaterStatus)
+            {
+                <label class="btn btn-info">ON</label>
+            }
+            else
+            {
+                <label class="btn btn-danger">OFF</label>
+            }
+        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=1">On</a>
-    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=0">Off</a>
+    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=true">On</a>
+    <a href="/ArduinoStationsMvc/Details/@Model.Id?waterStatus=false">Off</a>
 
     waterStatus
 </div>

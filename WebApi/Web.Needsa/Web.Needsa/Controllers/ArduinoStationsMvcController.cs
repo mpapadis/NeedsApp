@@ -14,7 +14,7 @@ namespace Web.Needsa.Controllers
     public class ArduinoStationsMvcController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly string url = "http://192.168.0.177/arduino/webserver/";
+        //private readonly string url = "http://192.168.0.177/arduino/webserver/";
 
         public ArduinoStationsMvcController(ApplicationDbContext context)
         {
@@ -43,11 +43,11 @@ namespace Web.Needsa.Controllers
                     // ... Use HttpClient.
                     var urlWaterCommand = "";
                     if (arduinoStation.WaterStatus) {
-                        urlWaterCommand = $"{url}wateron/";
+                        urlWaterCommand = $"{arduinoStation.Uri}wateron/";
                     }
                     else
                     {
-                        urlWaterCommand = $"{url}wateroff/";
+                        urlWaterCommand = $"{arduinoStation.Uri}wateroff/";
                     }
                     using (HttpClient client = new HttpClient())
                         using (HttpResponseMessage response = await client.GetAsync(urlWaterCommand))
