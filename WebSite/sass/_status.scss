@@ -1,0 +1,33 @@
+.areaInfoCont {
+    margin: 15px 0;
+    background-color: $white;
+}
+
+.areaInfoCont { padding-bottom: 50px; }
+.areaInfo { margin-bottom: 5px; }
+.areaInfoVal { border-bottom: 1px dotted $lblue; }
+.weatherTitle { font-weight: 600; font-size: 20px; }
+.weatherTxt { margin-top: 20px; }
+
+.weatherPrediction {
+    padding: 10px;
+    &:not(:nth-of-type(2)) { background-color: $lblue; color: $white; }
+}
+
+.statusCont {
+    margin-bottom: 10px;
+    text-align: center;
+    div {
+        display: inline-block;
+        float: left;
+        margin: 0 10px; 
+    }
+    .stationStatusChange {
+        padding: 3px;
+        text-align: center;
+        background-color: $red; color: $white;
+        width: 130px;
+        line-height: 18px;
+        a { color: $white; &:hover { color: $white; text-decoration: none; } }
+    }
+}
