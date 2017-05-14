@@ -11,9 +11,7 @@
     </ContentPage.Resources>
     <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Label Text="{res:Translate MainPageTitle}" 
 
-           StyleId="MainPageTitleLbl" />
             <Button Text="Get Location" Command="{Binding GetLocationCommand}"
                     HeightRequest="40" 
                     HorizontalOptions="FillAndExpand" 

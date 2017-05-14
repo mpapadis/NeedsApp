@@ -49,7 +49,10 @@ namespace Web.Needsa
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            //services.AddCors();
             services.AddMvc();
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod()));
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -61,6 +64,8 @@ namespace Web.Needsa
         {
             //configure StupidShedulerTimerService
             StupidShedulerTimerService.StupidShedulerTimerStart(app.ApplicationServices);
+
+            app.UseCors("AllowAll");
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
