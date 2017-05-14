@@ -28,9 +28,9 @@
                         <ViewCell>
                             <Frame Padding="5" OutlineColor="Gray" HasShadow="True" Margin="5">
                                 <StackLayout Orientation="Vertical">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="Name:"/>
-                                        <Label Text="{Binding Description}"/>
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="Azure"> 
+                                        
+                                        <Label Text="{Binding Description}" FontSize="Large"/>
                                     </StackLayout>
                                     <!--<StackLayout Orientation="Horizontal">
                                         <Label Text="Is Open"/>

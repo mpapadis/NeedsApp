@@ -32,7 +32,7 @@ namespace NeedsApp.Core.ViewModels
 
         private ArduinoStation _arduinoStation;
 
-        public ArduinoStation ArduinoStation { get { return _arduinoStation; } set { _arduinoStation = value; } }
+        public ArduinoStation ArduinoStation { get { return _arduinoStation; } set { _arduinoStation = value; RaiseAllPropertiesChanged(); } }
 
         public SpotViewModel(ILocationService locationService, IHttpService httpService)
         {
@@ -155,17 +155,18 @@ namespace NeedsApp.Core.ViewModels
 
         public bool WaterStatus {
             get { return ArduinoStation?.WaterStatus ?? false; }
+            set { ArduinoStation.WaterStatus = value; RaisePropertyChanged(); }
         }
 
         public string WaterStatusString {
             get {
                 if (WaterStatus == true)
                 {
-                    return "Ανοικτό";
+                    return "Watering";
                 }
                 else if (WaterStatus == false)
                 {
-                    return "Κλειστό";
+                    return "Waiting";
                 }
                 else
                 {
@@ -254,7 +255,7 @@ namespace NeedsApp.Core.ViewModels
                     if (lst != null )
                     {
                         ArduinoStation = lst.FirstOrDefault(x => x.Id == _arduinoStationID.Value);
-                        RaiseAllPropertiesChanged();
+                        
                     }
                 }
 
@@ -282,6 +283,8 @@ namespace NeedsApp.Core.ViewModels
                     Mvx.Exception(ex.Message);
                 }
             }
+
+            RaiseAllPropertiesChanged();
         }
 
         private async Task SaveDataAsync()
@@ -312,9 +315,9 @@ namespace NeedsApp.Core.ViewModels
 
         public ICommand SaveDataCommand { get { return new MvxAsyncCommand(SaveDataAsync); } }
 
-        public ICommand StartWatering { get { return new MvxAsyncCommand(async() => await ToggleWateringAsync(true)); } }
+        public ICommand StartWatering { get { return new MvxAsyncCommand(async () => { await ToggleWateringAsync(true); await LoadDataAsync(); }); } }
 
-        public ICommand StopWatering { get { return new MvxAsyncCommand(async () => await ToggleWateringAsync(false)); } }
+        public ICommand StopWatering { get { return new MvxAsyncCommand(async () => { await ToggleWateringAsync(false); await LoadDataAsync(); }); } }
 
         public async Task ToggleWateringAsync(bool status)
         {
@@ -328,8 +331,8 @@ namespace NeedsApp.Core.ViewModels
                
                  ArduinoStation.WaterStatus = status; //replace with load data from api
 
-                await HttpService.SendOpenCloseCommand(new OpenCloseCommandDto() { StationId = ArduinoStation.Id, StationStatus = status });
-
+                var r = await HttpService.SendOpenCloseCommand(new OpenCloseCommandDto() { StationId = ArduinoStation.Id, StationStatus = status });
+                WaterStatus = status;
                 
             }
             catch (Exception ex)

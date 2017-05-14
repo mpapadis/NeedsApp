@@ -10,8 +10,8 @@ namespace NeedsApp.Core.Services
 {
     public class HttpService : IHttpService
     {
-        string serviceUrl = "http://192.168.0.82/api/";
-        HttpClient httpClient; /// = "http://192.168.0.82/api/";
+        string serviceUrl = "http://10.16.248.133/api/";
+        HttpClient httpClient; /// = "http://10.16.248.133/api/";
 
         public HttpService()
         {

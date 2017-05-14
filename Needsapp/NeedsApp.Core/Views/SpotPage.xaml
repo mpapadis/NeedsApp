@@ -23,9 +23,14 @@
                 <Label Text="Longitude:" WidthRequest="100"/>
                 <Label Text="{Binding SpotLongitude}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Status:" WidthRequest="100"/>
+                <Label Text="{Binding WaterStatusString}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            
             <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
-            <Button Text="Open" Command="{Binding StartWatering}"/>
-            <Button Text="Close" Command="{Binding StopWatering}" />
+            <Button Text="Start watering" Command="{Binding StartWatering}"/>
+            <Button Text="Stop watering" Command="{Binding StopWatering}" />
         </StackLayout>
   </ScrollView>
 </ContentPage>

@@ -12,7 +12,9 @@ namespace Web.Needsa
         public static void Main(string[] args)
         {
             //todo: must change the urls
-            var urls = new [] { "http://localhost:80", "http://192.168.0.82:80" };
+            //10.16.248.133
+            var urls = new[] { "http://localhost:80", "http://10.16.248.133:80" };
+            //var urls = new [] { "http://localhost:80", "http://192.168.0.82:80" };
             //var urls = new[] { "http://localhost:80", "http://10.0.0.116:80" };
 
             var host = new WebHostBuilder()
