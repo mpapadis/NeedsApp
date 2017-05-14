@@ -44,7 +44,7 @@ namespace Web.Needsa.Controllers
         [Route("ArduinoStationVariables/{stationid}")]
         public IEnumerable<ArduinoStationVariable> ArduinoStationVariables(int stationid)
         {
-            return _db.ArduinoStationVariables.Where(x=>x.ArduinoStationId == stationid).ToList();
+            return _db.ArduinoStationVariables.Where(x=>x.ArduinoStationId == stationid).OrderByDescending(x=>x.DateCaptured).ToList();
         }
 
 

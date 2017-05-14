@@ -2775,17 +2775,20 @@ namespace NeedsApp.Droid
 			// aapt resource value: 0x7f020109
 			public const int notification_icon_background = 2130837769;
 			
-			// aapt resource value: 0x7f02010c
-			public const int notification_template_icon_bg = 2130837772;
-			
 			// aapt resource value: 0x7f02010d
-			public const int notification_template_icon_low_bg = 2130837773;
+			public const int notification_template_icon_bg = 2130837773;
+			
+			// aapt resource value: 0x7f02010e
+			public const int notification_template_icon_low_bg = 2130837774;
 			
 			// aapt resource value: 0x7f02010a
 			public const int notification_tile_bg = 2130837770;
 			
 			// aapt resource value: 0x7f02010b
 			public const int notify_panel_notification_icon_bg = 2130837771;
+			
+			// aapt resource value: 0x7f02010c
+			public const int splashscreen = 2130837772;
 			
 			static Drawable()
 			{
