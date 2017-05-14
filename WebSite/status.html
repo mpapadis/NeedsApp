@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -142,7 +142,7 @@
                         dataType    : 'json',
                         contentType : "application/json",
                         data        : JSON.stringify(openCloseCommandData),
-                        url         : "http://192.168.0.82/api/ArduinoStations/OpenCloseCommand/",
+                        url: "http://10.16.248.133/api/ArduinoStations/OpenCloseCommand/",
                         success     : function (response) {
                         }
                     });
@@ -150,22 +150,22 @@
 
                 $.ajax({
                     type: "get",
-                    url: "http://192.168.0.82/api/ArduinoStations/ArduinoStationVariables/" + areaId,
+                    url: "http://10.16.248.133/api/ArduinoStations/ArduinoStationVariables/" + areaId,
                     success: function (response) {
                         console.log(response);
                         $('.areaInfoVal.humidity').html(response[0].valueCaptured);
                         $('.areaInfoVal.temperature').html(response[2].valueCaptured);
                     }
                 });
-                /*$('.humidity').text(areaInfo.areaId.humidity);
-                $('.temperature').text(areaInfo.areaId.temperature);
-                $('.ph').text(areaInfo.areaId.ph);*/
-            }, 2000);
+                //$('.humidity').text(areaInfo.areaId.humidity);
+                //$('.temperature').text(areaInfo.areaId.temperature);
+                //$('.ph').text(areaInfo.areaId.ph);
+            }, 3000);
             
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);
-            google.charts.load('current', {packages: ['corechart', 'bar']});
-            google.charts.setOnLoadCallback(drawAxisTickColors);
+            /*google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(drawAxisTickColors);*/
         });
     </script>
 </body>
