@@ -24,6 +24,27 @@
                 <Label Text="Longitude:" WidthRequest="100"/>
                 <Label Text="{Binding SpotLongitude}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
+
+            <StackLayout x:Name="MapStackLayout" 
+                                     IsVisible="True"
+                                     Padding="10" 
+                                     HorizontalOptions="FillAndExpand" 
+                                     VerticalOptions="FillAndExpand"
+                                     >
+                <maps:Map x:Name="myMap" 
+                              MapType="Hybrid" 
+                              HasScrollEnabled="False" 
+                              HasZoomEnabled="True" 
+                              IsVisible="true"
+                              VerticalOptions="FillAndExpand"                                  
+                              HeightRequest="200"                                      
+                              WidthRequest="200"
+                              AbsoluteLayout.LayoutFlags="WidthProportional"  
+                              AbsoluteLayout.LayoutBounds ="1, 1, AutoSize, AutoSize"
+                              />
+            </StackLayout>
+
+
             <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
             <Button Text="Open" Command="{Binding StartWatering}"/>
             <Button Text="Close" Command="{Binding StopWatering}" />
