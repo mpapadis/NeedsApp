@@ -4,6 +4,7 @@ using NeedsApp.Core.Model;
 using NeedsApp.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -187,7 +188,7 @@ namespace NeedsApp.Core.ViewModels
                         {
                             double lat;
                             double lng;
-                            if (double.TryParse(ar[0], out lat) && double.TryParse(ar[1], out lng))
+                            if (double.TryParse(ar[0], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out lat) && double.TryParse(ar[1], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out lng))
                                 p = new Position() { Latitude = lat, Longitude = lng};
                         }
                     }
@@ -201,9 +202,10 @@ namespace NeedsApp.Core.ViewModels
                 return p;
             }
             set {
-                if (value != null)
+                if (value != null && value.Latitude.HasValue && value.Longitude.HasValue)
                 {
-                    var s = value.Latitude.ToString() + ", " + value.Longitude.ToString();
+                    //var s = value.Latitude.ToString() + ", " + value.Longitude.ToString();
+                    var s= value.Latitude.Value.ToString(CultureInfo.InvariantCulture) + ", " + value.Longitude.Value.ToString(CultureInfo.InvariantCulture);
                     ArduinoStation.Location = s;
                 }
                 else

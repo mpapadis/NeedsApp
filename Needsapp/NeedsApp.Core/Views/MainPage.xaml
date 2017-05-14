@@ -2,17 +2,30 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NeedsApp.Core.Views.MainPage"
-             xmlns:res="clr-namespace:NeedsApp.Core.Resources;assembly=NeedsApp.Core">
+             xmlns:res="clr-namespace:NeedsApp.Core.Resources;assembly=NeedsApp.Core"
+             xmlns:c="clr-namespace:NeedsApp.Core.Mobile.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <c:StringHasValueConverter x:Key="StringHasValueConverter"/>
+       </ResourceDictionary>
+    </ContentPage.Resources>
     <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Label Text="{res:Translate MainPageTitle}" 
 
            StyleId="MainPageTitleLbl" />
-            <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
-            <Label Text="{Binding Latitude}"/>
-            <Label Text="{Binding Longitude}"/>
-            <Button Text="My stations" Command="{Binding ViewSpotListCommand}"/>
-            <Button Text="View Spot" Command="{Binding ViewSpotCommand}" IsVisible="True"/>
+            <Button Text="Get Location" Command="{Binding GetLocationCommand}"
+                    HeightRequest="40" 
+                    HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="EndAndExpand"
+                        BackgroundColor="#BDBDBD"/>
+            <Label Text="{Binding Latitude}" IsVisible="{Binding Latitude, Converter={StaticResource StringHasValueConverter}}"/>
+            <Label Text="{Binding Longitude}" IsVisible="{Binding Longitude, Converter={StaticResource StringHasValueConverter}}"/>
+            <Button Text="My stations" Command="{Binding ViewSpotListCommand}"  HeightRequest="40" 
+                    HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="EndAndExpand"
+                        BackgroundColor="#BDBDBD"/>
+            <Button Text="View Spot" Command="{Binding ViewSpotCommand}" IsVisible="False"/>
         </StackLayout>
         <ContentView x:Name="actIndBackground"
                                 BackgroundColor="Black" Opacity="0.5"
