@@ -4,6 +4,7 @@ using NeedsApp.Core.Model;
 using NeedsApp.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,19 +24,27 @@ namespace NeedsApp.Core.ViewModels
             set { _locationService = value; }
         }
 
-        private Spot _spot;
+        private IHttpService _httpService;
+        public IHttpService HttpService {
+            get { return _httpService; }
+            set { _httpService = value; }
+        }
 
-        public Spot Spot { get => _spot; set => _spot = value; }
+        private ArduinoStation _arduinoStation;
 
-        public SpotViewModel(ILocationService locationService)
+        public ArduinoStation ArduinoStation { get { return _arduinoStation; } set { _arduinoStation = value; } }
+
+        public SpotViewModel(ILocationService locationService, IHttpService httpService)
         {
             LocationService = locationService;
+            HttpService = httpService;
+
         }
-        private int? _spotID;
+        private int? _arduinoStationID;
 
         public void Init(NavigationParams navigation)
         {
-            _spotID = navigation.id;
+            _arduinoStationID = navigation.id;
             init();
         }
 
@@ -110,10 +119,10 @@ namespace NeedsApp.Core.ViewModels
         [PropertyChanged.AlsoNotifyFor(nameof(Title))]
         public String SpotName {
             get {
-                return Spot?.Name ?? string.Empty;
+                return ArduinoStation?.Description ?? string.Empty;
             }
             set {
-                Spot.Name = value;
+                ArduinoStation.Description = value;
 
                 //if (SaveDataCommand != null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
@@ -122,16 +131,86 @@ namespace NeedsApp.Core.ViewModels
             }
         }
 
+
+        //public int Sensors {
+        //    get {
+        //        return ArduinoStation?.Sensors ?? 0;
+        //    }
+        //}
         
+        //public string IsAccessibleString {
+        //    get {
+        //        if (IsAccessible)
+        //            return "Συνδέθηκε";
+        //        else
+        //            return "Δεν βρέθηκε!";
+        //    }
+        //}
+
+
+        //public bool IsAccessible {
+        //    get { return ArduinoStation?.Accessible ?? false; }
+        //}
+
+
+        public bool WaterStatus {
+            get { return ArduinoStation?.WaterStatus ?? false; }
+        }
+
+        public string WaterStatusString {
+            get {
+                if (WaterStatus == true)
+                {
+                    return "Ανοικτό";
+                }
+                else if (WaterStatus == false)
+                {
+                    return "Κλειστό";
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
 
 
         [PropertyChanged.AlsoNotifyFor(nameof(SpotLongitude), nameof(SpotLatitude))]
         public Position SpotLocation {
             get {
-                return Spot?.SpotLocation;
+                Position p = null;
+                if(!String.IsNullOrEmpty(ArduinoStation.Location))
+                {
+                    try
+                    {
+                        var ar = ArduinoStation.Location.Split(',').ToArray<string>();
+                        if (ar!=null && ar.AsEnumerable<string>().Count() == 2)
+                        {
+                            double lat;
+                            double lng;
+                            if (double.TryParse(ar[0], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out lat) && double.TryParse(ar[1], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out lng))
+                                p = new Position() { Latitude = lat, Longitude = lng};
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                    
+                }
+                return p;
             }
             set {
-                Spot.SpotLocation = value;
+                if (value != null && value.Latitude.HasValue && value.Longitude.HasValue)
+                {
+                    //var s = value.Latitude.ToString() + ", " + value.Longitude.ToString();
+                    var s= value.Latitude.Value.ToString(CultureInfo.InvariantCulture) + ", " + value.Longitude.Value.ToString(CultureInfo.InvariantCulture);
+                    ArduinoStation.Location = s;
+                }
+                else
+                { ArduinoStation.Location = string.Empty; }
+                
                 //if (SaveDataCommand!=null && SaveDataCommand.CanExecute(this))
                 //    SaveDataCommand.Execute(this);
             }
@@ -140,13 +219,13 @@ namespace NeedsApp.Core.ViewModels
 
         public string SpotLongitude {
             get {
-                return Spot?.SpotLocation?.Longitude?.ToString() ?? string.Empty;
+                return SpotLocation?.Longitude?.ToString() ?? string.Empty;
             }
         }
 
         public string SpotLatitude {
             get {
-                return Spot?.SpotLocation?.Latitude?.ToString() ?? string.Empty;
+                return SpotLocation?.Latitude?.ToString() ?? string.Empty;
             }
         }
 
@@ -165,9 +244,18 @@ namespace NeedsApp.Core.ViewModels
             IsBusy = true;
             try
             {
-                if (_spotID == null || !_spotID.HasValue || _spotID.Value == 0)
+                if (_arduinoStationID == null || !_arduinoStationID.HasValue || _arduinoStationID.Value == 0)
                 {
-                    Spot =  new Spot() { ID = 10, Name = "arduino1", SpotLocation = null };
+                    ArduinoStation = new ArduinoStation() { Id = 0, Description = "arduino 1", Location = "37.973555, 23.680971", WaterStatus = false };
+                }
+                else
+                {
+                    var lst = await HttpService.GetArduinoStationList();
+                    if (lst != null )
+                    {
+                        ArduinoStation = lst.FirstOrDefault(x => x.Id == _arduinoStationID.Value);
+                        RaiseAllPropertiesChanged();
+                    }
                 }
 
             }
@@ -224,14 +312,55 @@ namespace NeedsApp.Core.ViewModels
 
         public ICommand SaveDataCommand { get { return new MvxAsyncCommand(SaveDataAsync); } }
 
-        public ICommand StartWatering { get { return null; } }
+        public ICommand StartWatering { get { return new MvxAsyncCommand(async() => await ToggleWateringAsync(true)); } }
 
-        public ICommand StopWatering { get { return null; } }
+        public ICommand StopWatering { get { return new MvxAsyncCommand(async () => await ToggleWateringAsync(false)); } }
+
+        public async Task ToggleWateringAsync(bool status)
+        {
+            if (IsBusy) return;
+
+            Device.BeginInvokeOnMainThread(() => IsBusy = true);
+            Exception myEx = null;
+            try
+            {
+                // api - start - stop
+               
+                 ArduinoStation.WaterStatus = status; //replace with load data from api
+
+                await HttpService.SendOpenCloseCommand(new OpenCloseCommandDto() { StationId = ArduinoStation.Id, StationStatus = status });
+
+                
+            }
+            catch (Exception ex)
+            {
+                myEx = ex;
+                Mvx.Error(ex.Message);
+            }
+            finally
+            {
+                Device.BeginInvokeOnMainThread(() => IsBusy = false);
+            }
+
+            if (myEx!= null)
+            {
+                try
+                {
+                    var p = new ContentPage();
+                    await p.DisplayAlert("Σφάλμα", myEx.Message, "ΟΚ");
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
 
 
         public class NavigationParams 
             {
-            public int? id;
+            public int id { get; set; }
             }
     }
 }

@@ -24,6 +24,8 @@
                 <Label Text="{Binding SpotLongitude}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <Button Text="Get Location" Command="{Binding GetLocationCommand}"/>
+            <Button Text="Open" Command="{Binding StartWatering}"/>
+            <Button Text="Close" Command="{Binding StopWatering}" />
         </StackLayout>
   </ScrollView>
 </ContentPage>

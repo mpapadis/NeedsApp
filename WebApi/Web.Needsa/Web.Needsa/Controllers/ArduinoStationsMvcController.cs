@@ -8,13 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Web.Needsa.Data;
 using Web.Needsa.Models.Db;
 using System.Net.Http;
+using Web.Needsa.Services;
 
 namespace Web.Needsa.Controllers
 {
     public class ArduinoStationsMvcController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly string url = "http://192.168.0.177/arduino/webserver/";
+        
+        //private readonly string url = "http://192.168.0.177/arduino/webserver/";
 
         public ArduinoStationsMvcController(ApplicationDbContext context)
         {
@@ -35,36 +37,11 @@ namespace Web.Needsa.Controllers
                 return NotFound();
             }
 
-            var arduinoStation = await _context.ArduinoStations.SingleOrDefaultAsync(m => m.Id == id);
+            var arduinoStation = await _context.ArduinoStations.AsNoTracking().SingleOrDefaultAsync(m => m.Id == id);
             if (waterStatus.HasValue) {
-                if (arduinoStation.WaterStatus != waterStatus) {
-                    arduinoStation.WaterStatus = waterStatus.Value;
-                    _context.SaveChanges();
-                    // ... Use HttpClient.
-                    var urlWaterCommand = "";
-                    if (arduinoStation.WaterStatus) {
-                        urlWaterCommand = $"{url}wateron/";
-                    }
-                    else
-                    {
-                        urlWaterCommand = $"{url}wateroff/";
-                    }
-                    using (HttpClient client = new HttpClient())
-                        using (HttpResponseMessage response = await client.GetAsync(urlWaterCommand))
-                            using (HttpContent content = response.Content)
-                            {
-                                // ... Read the string.
-                                string result = await content.ReadAsStringAsync();
-
-                                // ... Display the result.
-                                if (result != null &&
-                                    result.Length >= 50)
-                                {
-                                    Console.WriteLine(result.Substring(0, 50) + "...");
-                                }
-                            }
-                }
-                
+                var arduinoService = new ArduinoService(_context);
+                var sss = new Models.Dto.OpenCloseCommandDto() { StationId = id.Value, StationStatus = waterStatus.Value };
+                await arduinoService.SendOpenCLoseCommand(sss);
             }
             if (arduinoStation == null)
             {

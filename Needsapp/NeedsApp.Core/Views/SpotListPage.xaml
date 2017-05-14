@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeedsApp.Core.Views.SpotListPage">
+    <AbsoluteLayout>
+        <StackLayout HorizontalOptions="FillAndExpand" 
+             VerticalOptions="FillAndExpand"
+             AbsoluteLayout.LayoutFlags="All" 
+             AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+             >
+            <ListView x:Name="listView"
+                        ItemsSource="{Binding ArduinoStations, Mode=TwoWay}" 
+                        SelectedItem="{Binding SelectedItem}"
+                        CachingStrategy="RetainElement"
+                        HasUnevenRows="True"
+                        IsPullToRefreshEnabled="True"
+                        RefreshCommand="{Binding RefreshDataCommand}"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0,0,1,1"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="Transparent"
+                        ItemTapped="ListView_ItemTapped"
+                  >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="5" OutlineColor="Gray" HasShadow="True" Margin="5">
+                                <StackLayout Orientation="Vertical">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Name:"/>
+                                        <Label Text="{Binding Description}"/>
+                                    </StackLayout>
+                                    <!--<StackLayout Orientation="Horizontal">
+                                        <Label Text="Is Open"/>
+                                        <Switch IsToggled="{Binding WaterStatus}"/>
+                                    </StackLayout>-->
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <ContentView x:Name="actIndBackground"
+                                 BackgroundColor="Black" Opacity="0.5"
+                                 AbsoluteLayout.LayoutFlags="All"
+                                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                 IsVisible="{Binding IsBusy}">
+        </ContentView>
+        <ActivityIndicator x:Name="actInd"
+                                 AbsoluteLayout.LayoutFlags="PositionProportional"
+                                 AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                                 IsRunning="{Binding IsBusy}"
+                                 IsVisible="{Binding IsBusy}" 
+                                 BackgroundColor="White"/>
+    </AbsoluteLayout>
+</ContentPage>

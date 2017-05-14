@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Needsa.Data;
 using Web.Needsa.Models.Db;
+using Web.Needsa.Models.Dto;
+using Web.Needsa.Services;
 
 namespace Web.Needsa.Controllers
 {
@@ -22,22 +24,53 @@ namespace Web.Needsa.Controllers
 
         // GET: api/ArduinoStations
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ArduinoStation> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _db.ArduinoStations.ToList();
         }
 
-        // GET: api/ArduinoStations/[dsadasdd]
-        [HttpGet("{stringArray}", Name = "Get")]
-        public string Get(string stringArray)
+
+        // GET: api/Variables
+        [HttpGet]
+        [Route("GetVariables")]
+        public IEnumerable<Variable> GetVariables()
         {
-            return "value";
+            return _db.Variables.ToList();
         }
-        
-        // POST: api/ArduinoStations
-        [HttpPost]
-        public void Post([FromBody]string value)
+
+
+        // GET: api/Variables
+        [HttpGet]
+        [Route("ArduinoStationVariables/{stationid}")]
+        public IEnumerable<ArduinoStationVariable> ArduinoStationVariables(int stationid)
         {
+            return _db.ArduinoStationVariables.Where(x=>x.ArduinoStationId == stationid).OrderByDescending(x=>x.DateCaptured).ToList();
+        }
+
+
+        // POST: api/ArduinoStations/OpenCloseCommand
+        [HttpPost]
+        [Route("OpenCloseCommand")]
+        public async Task<bool> Post([FromBody]OpenCloseCommandDto openCloseCommandDto)
+        {
+            var arduinoService = new ArduinoService(_db);
+            await arduinoService.SendOpenCLoseCommand(openCloseCommandDto);
+            return true;
+        }
+
+        //// GET: api/ArduinoStations/[dsadasdd]
+        //[HttpGet("{stringArray}", Name = "Get")]
+        //public string Get(string stringArray)
+        //{
+        //    return "value";
+        //}
+
+
+        // GET: api/ArduinoStations/1
+        [HttpGet("{id}", Name = "Get")]
+        public ArduinoStation Get(int id)
+        {
+            return _db.ArduinoStations.FirstOrDefault(x => x.Id == id);
         }
         
         // PUT: api/ArduinoStations/5
