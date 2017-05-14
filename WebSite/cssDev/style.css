@@ -13,6 +13,8 @@ a, a:hover, a:focus {
   margin: 20px 0; }
   .logoCont .logoImg {
     display: block; }
+    .logoCont .logoImg img {
+      width: 150px; }
   .logoCont .logoTxt {
     font-size: 35px; }
 
@@ -78,7 +80,7 @@ h3.screenTitle {
   font-size: 20px; }
 
 .areaInfoCont {
-  margin: 50px 0;
+  margin: 15px 0;
   background-color: #ffffff; }
 
 .areaInfoCont {
@@ -109,28 +111,30 @@ h3.screenTitle {
   .statusCont div {
     display: inline-block;
     float: left;
-    margin: 0 10px;
-    padding: 10px;
+    margin: 0 10px; }
+  .statusCont .stationStatusChange {
+    padding: 3px;
     text-align: center;
     background-color: #CF000F;
     color: #ffffff;
-    height: 65px;
     width: 130px;
-    line-height: 41px; }
-  .statusCont .stationStatus.ok, .statusCont .stationAccessibility.ok {
-    background-color: #87D37C;
-    color: #ffffff; }
+    line-height: 18px; }
+    .statusCont .stationStatusChange a {
+      color: #ffffff; }
+      .statusCont .stationStatusChange a:hover {
+        color: #ffffff;
+        text-decoration: none; }
 
 .icon {
   position: relative;
   display: block;
   width: 150px;
   height: 105px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   /* control icon size here */
   color: #00BFC0;
   margin: 0 auto;
-  margin-top: 80px; }
+  margin-top: 10px; }
 
 .cloud {
   position: absolute;

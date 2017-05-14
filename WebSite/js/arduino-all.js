@@ -14,7 +14,7 @@ var //siteUrl = window.position.origin + '/',
     map,
     infoWindow,
     mapOptions,
-    areasArray = {};
+    areasArray = [];
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -41,75 +41,81 @@ $(document).ready(function () {
         }
     });
 
-    mapOptions = {
-        zoom: 15,
-        center: new google.maps.LatLng(37.973105, 23.742327),
-        mapTypeId: google.maps.MapTypeId.TERRAIN
-    };
-
-    areasArray = {
-        "1" : {
-            "id" : 1,
-            "title" : "Εθνικός Κήπος",
-            "position" : {lat: 37.972564, lng: 23.737436},
-            "sensors" : 8,
-            "status" : "open",
-            "accessible" : "true",
-            "humidity" : "250",
-            "temperature" : "27",
-            "ph" : "6"
-        },
-        "2" : {
-            "id" : 2,
-            "title" : "Βυζαντινό & Χριστιανικό Μουσείο",
-            "position" : {lat: 37.974598, lng: 23.745173},
-            "sensors" : 2,
-            "status" : "closed",
-            "accessible" : "false",
-            "humidity" : "500",
-            "temperature" : "20",
-            "ph" : "3"
+    $.ajax({
+        type: "get",
+        url: "http://192.168.0.82/api/ArduinoStations/",
+        success: function (response) {
+            response.forEach(function(element) {
+                var latlng = element.location.split(',');
+                areasArray.push(
+                    {
+                        "id" : element.id,
+                        "title" : element.description,
+                        "position" : {lat: parseFloat(latlng[0]), lng: parseFloat(latlng[1])},
+                        "status" : element.waterStatus,
+                        "uri" : element.uri
+                    }
+                );
+            }, this);
         }
-    };
+    });
 });
 
 function generateMap() {
-    map = new google.maps.Map($('#map-canvas')[0], mapOptions);
-    for (var area in areasArray) {
-        var statusColor;
-
-        if(areasArray[area].status == "open" && areasArray[area].accessible == "true") {
-            statusColor = "#26A65B";
-        } else {
-            statusColor = '#FF0000';
-        }
-
-        var areaCircle = new google.maps.Circle({
-            strokeColor: statusColor,
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: statusColor,
-            fillOpacity: 0.35,
-            map: map,
-            center: areasArray[area].position,
-            radius: Math.sqrt(areasArray[area].sensors) * 100,
-            areaId: areasArray[area].id
-        });
-
-        areaCircle.addListener('click', showInfoWindow);
-        infoWindow = new google.maps.InfoWindow;
-    }
-}
-
-function generateAreaMap(areaId) {
+    var bounds = new google.maps.LatLngBounds();
     
+    mapOptions = {
+        zoom: 16,
+        center: new google.maps.LatLng(37.992073, 23.707646),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+    
+    setTimeout(function() {
+        areasArray.forEach(function(area) {
+            var statusColor;
+            
+            //cLatLng = new google.maps.LatLng(parseFloat(area.position.lat), parseFloat(area.position.lng.replace(/\s+/g, '')));
+            //bounds.extend(cLatLng);
+
+            if(area.status == true/* && area.accessible == "true"*/) {
+                statusColor = "#26A65B";
+            } else {
+                statusColor = '#FF0000';
+            }
+
+            //console.log(initLatLng);
+            var areaCircle = new google.maps.Circle({
+                strokeColor: statusColor,
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: statusColor,
+                fillOpacity: 0.35,
+                map: map,
+                center: area.position,
+                radius: 100,
+                areaId: area.id
+            });
+
+            areaCircle.addListener('click', showInfoWindow);
+            infoWindow = new google.maps.InfoWindow;
+        }, this);
+    }, 2000);
+    
+    map = new google.maps.Map($('#map-canvas')[0], mapOptions);
+    //map.fitBounds(bounds);
 }
 
 function showInfoWindow(event) {
-    var areaInfo = areasArray[$(this)[0].areaId];
+    var areaInfo;
+    for (var i in areasArray) {
+        if (areasArray[i].id == $(this)[0].areaId) {
+            areaInfo = areasArray[i];
+        }
+    }
+    
     var contentString = '<span class="infowindowtxt"><b><a href="'+ siteUrl +'status.html?area='+ areaInfo.id +'">'+ areaInfo.title +'</a></b><br>' +
-        '<b>Κατάσταση:</b> ' + areaInfo.status + '<br/>' +
-        '<b>Προσβάσιμο</b>: ' + areaInfo.accessible + '</span>';
+        '<b>Κατάσταση:</b> ' + areaInfo.status + '<br/>'/* +
+        '<b>Προσβάσιμο</b>: ' + areaInfo.accessible + '</span>'*/;
 
     // Replace the info window's content and position.
     infoWindow.setContent(contentString);
@@ -189,33 +195,100 @@ function LoadWeatherApi() {
     });
 }
 
-function startRefresh() {
+/*function startRefresh() {
     setTimeout(startRefresh, 60000);
     $.get('http://192.168.0.82/api/ArduinoStations', function(data) {
         $('#checkrefresh').html(data);    
     });
-}
+}*/
 
 function drawChart() {
-    // Create the data table.
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Topping');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-        ['Mushrooms', 3],
-        ['Onions', 1],
-        ['Olives', 1],
-        ['Zucchini', 1],
-        ['Pepperoni', 2]
+    var data = google.visualization.arrayToDataTable([
+        ['Μήνας', 'Happy Trees', 'Unhappy Trees'],
+        ['Ιανουάριος', 460, 600],
+        ['Φεβρουάριος', 300, 460],
+        ['Μάρτιος', 660, 1120],
+        ['Απρίλιος', 300, 540],
+        ['Μάιος', 420, 540],
+        ['Ιούνιος', 420, 540],
+        ['Ιούλιος', 420, 540],
+        ['Αύγουστος', 470, 540],
+        ['Σεπτέμβρης', 470, 540],
+        ['Οκτώβρης', 470, 540],
+        ['Νοέμβρης', 470, 540],
+        ['Δεκέμβρης', 470, 540]
     ]);
 
-    // Set chart options
-    var options = {'title':'How Much Pizza I Ate Last Night',
-        'width':400,
-        'height':300
+    var options = {
+        title: 'Κατανάλωση νερού σε κυβικά',
+        curveType: 'function',
+        legend: { position: 'bottom' }
     };
 
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+}
+
+function drawAxisTickColors() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('year', 'Έτος');
+    data.addColumn('number', 'Happy Trees');
+    data.addColumn('number', 'Unhappy Trees');
+
+    data.addRows([
+        [{v: [8, 0, 0], f: '8 am'}, 1, .25],
+        [{v: [9, 0, 0], f: '9 am'}, 2, .5],
+        [{v: [10, 0, 0], f:'10 am'}, 3, 1],
+        [{v: [11, 0, 0], f: '11 am'}, 4, 2.25],
+        [{v: [12, 0, 0], f: '12 pm'}, 5, 2.25],
+        [{v: [13, 0, 0], f: '1 pm'}, 6, 3],
+        [{v: [14, 0, 0], f: '2 pm'}, 7, 4],
+        [{v: [15, 0, 0], f: '3 pm'}, 8, 5.25],
+        [{v: [16, 0, 0], f: '4 pm'}, 9, 7.5],
+        [{v: [17, 0, 0], f: '5 pm'}, 10, 10],
+    ]);
+
+    var options = {
+    title: 'Motivation and Energy Level Throughout the Day',
+    focusTarget: 'category',
+    hAxis: {
+        title: 'Time of Day',
+        format: 'h:mm a',
+        viewWindow: {
+        min: [7, 30, 0],
+        max: [17, 30, 0]
+        },
+        textStyle: {
+        fontSize: 14,
+        color: '#053061',
+        bold: true,
+        italic: false
+        },
+        titleTextStyle: {
+        fontSize: 18,
+        color: '#053061',
+        bold: true,
+        italic: false
+        }
+    },
+    vAxis: {
+        title: 'Rating (scale of 1-10)',
+        textStyle: {
+        fontSize: 18,
+        color: '#67001f',
+        bold: false,
+        italic: false
+        },
+        titleTextStyle: {
+        fontSize: 18,
+        color: '#67001f',
+        bold: true,
+        italic: false
+        }
+    }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
     chart.draw(data, options);
 }

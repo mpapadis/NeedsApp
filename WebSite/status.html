@@ -20,8 +20,8 @@
         <div class="row">
             <div class="menuCont col-xs-12 col-sm-3">
                 <div class="logoCont">
-                    <div class="logoImg"><img src="./images/logo.png" alt="Happy Trees" /></div>
-                    <div class="logoTxt">Happy Trees</div>
+                    <div class="logoImg"><img src="./images/happy-trees.png" alt="Happy Trees" /></div>
+                    <!--<div class="logoTxt">Happy Trees</div>-->
                 </div>
                 <div class="menu">
                     <nav>
@@ -32,19 +32,18 @@
                 </div>
             </div>
             <div class="adminCont col-xs-12 col-sm-9">
-                <!--<div class="mapCont"><div id="map-canvas"></div></div>-->
                 <div class="areaInfoCont row">
                     <div class="col-xs-12 col-sm-6">
                         <h3 class="screenTitle">Πληροφορίες Σταθμού - <span class="customTitle"></span></h3>
                         <div class="statusCont clearfix">
-                            <div class="stationStatus"></div>
-                            <div class="stationAccessibility"></div>
+                            <div><strong>Κατάσταση</strong>: <span class="stationStatus"></span></div>
+                            <div class="stationStatusChange"></div>
+                            <!--<div class="stationAccessibility"></div>-->
                         </div>
-                        <div class="areaInfo"><strong>Υγρασία</strong>: <span class="areaInfoVal humidity"></span></div>
-                        <div class="areaInfo"><strong>Θερμοκρασία</strong>: <span class="areaInfoVal temperature"></span></div>
-                        <div class="areaInfo"><strong>pH</strong>: <span class="areaInfoVal ph"></span></div>
+                        <div class="areaInfo"><strong>Υγρασία Εδάφους (Centibar / kPa)</strong>: <span class="areaInfoVal humidity"></span></div>
+                        <div class="areaInfo"><strong>Θερμοκρασία Εδάφους</strong>: <span class="areaInfoVal temperature"></span> <sup>o</sup>C</div>
+                        <div id="curve_chart" style="width: 500px; height: 500px"></div>
 
-                        <div id="chart_div"></div>
                         <div id="checkrefresh"></div>
                     </div>
                     <div class="col-xs-12 col-sm-6 weather">
@@ -85,6 +84,9 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-12"><div id="chart_eco_div"></div></div>
+        </div>
     </section>
     
     <!--<script src="https://maps.googleapis.com/maps/api/js?keyAIzaSyB7EoqurIVwKlcxRl7uuBkm02IQf2jJ6jI"></script>-->
@@ -95,36 +97,75 @@
     <script type="text/javascript">
         $(document).ready(function () {
             LoadWeatherApi();
-            var areaId = getUrlParameter('area');
-            $('.customTitle').text(areasArray[areaId].title);
-            if(areasArray[areaId].status == "open") {
-                $('.stationStatus').addClass('ok');
-                $('.stationStatus').html("Ανοιχτός");
-            } else {
-                $('.stationStatus').html("Κλειστός");
-            }
 
-            if(areasArray[areaId].accessible == "true") {
-                $('.stationAccessibility').addClass('ok');
-                $('.stationAccessibility').html('Σύνδεση <i class="fa fa-wifi" aria-hidden="true"></i>');
-            } else {
-                $('.stationAccessibility').html('Σύνδεση <span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x text-danger"></i></span>');
-            }
+            setTimeout(function() {
+                var areaInfo, areaId = getUrlParameter('area');
+                for (var i in areasArray) {
+                    if (areasArray[i].id == areaId) {
+                        areaInfo = areasArray[i];
+                    }
+                }
+                
+                $('.customTitle').text(areaInfo.title);
+                if(areaInfo.status == "open") {
+                    $('.stationStatus').addClass('ok');
+                    $('.stationStatus').html("Ανοιχτός");
+                    $('.stationStatusChange').html('<a href="#" class="btn-station-command close">Κλείσιμο</a>');
+                } else {
+                    $('.stationStatus').html("Κλειστός");
+                    $('.stationStatusChange').html('<a href="#" class="btn-station-command open">Άνοιγμα</a>');
+                }
+
+                $('.btn-station-command').on('click', function(){
+                    var openCloseCommandData = {
+                        StationId : 1,
+                        StationStatus: true
+                    };
+                    if($(".btn-station-command").hasClass("close")){
+                        $(".btn-station-command").removeClass("close");
+                        $(".btn-station-command").addClass("open");
+                        $('.stationStatusChange .btn-station-command').html('Άνοιγμα');
+                        $('.stationStatus').html("Κλειστός");
+                        $('.stationStatus').removeClass('ok');
+                       openCloseCommandData.StationStatus = false;
+                    }else{
+                        $(".btn-station-command").removeClass("open");
+                        $(".btn-station-command").addClass("close");
+                        $('.stationStatusChange .btn-station-command').html('Κλείσιμο');
+                        $('.stationStatus').html("Ανοιχτός");
+                        $('.stationStatus').addClass('ok');
+                        openCloseCommandData.StationStatus = true;
+                    }
+                    
+                    $.ajax({
+                        type        : "post",
+                        dataType    : 'json',
+                        contentType : "application/json",
+                        data        : JSON.stringify(openCloseCommandData),
+                        url         : "http://192.168.0.82/api/ArduinoStations/OpenCloseCommand/",
+                        success     : function (response) {
+                        }
+                    });
+                });
+
+                $.ajax({
+                    type: "get",
+                    url: "http://192.168.0.82/api/ArduinoStations/ArduinoStationVariables/" + areaId,
+                    success: function (response) {
+                        console.log(response);
+                        $('.areaInfoVal.humidity').html(response[0].valueCaptured);
+                        $('.areaInfoVal.temperature').html(response[2].valueCaptured);
+                    }
+                });
+                /*$('.humidity').text(areaInfo.areaId.humidity);
+                $('.temperature').text(areaInfo.areaId.temperature);
+                $('.ph').text(areaInfo.areaId.ph);*/
+            }, 2000);
             
-            $('.humidity').text(areasArray[areaId].humidity);
-            $('.temperature').text(areasArray[areaId].temperature);
-            $('.ph').text(areasArray[areaId].ph);
-
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);
-
-            /*$.ajax({
-                type: "get",
-                url: "http://192.168.0.82/api/ArduinoStations",
-                success: function (response) {
-                    console.log(response);
-                }
-            });*/
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(drawAxisTickColors);
         });
     </script>
 </body>

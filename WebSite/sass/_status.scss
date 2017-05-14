@@ -1,5 +1,5 @@
 .areaInfoCont {
-    margin: 50px 0;
+    margin: 15px 0;
     background-color: $white;
 }
 
@@ -20,13 +20,14 @@
     div {
         display: inline-block;
         float: left;
-        margin: 0 10px; padding: 10px;
+        margin: 0 10px; 
+    }
+    .stationStatusChange {
+        padding: 3px;
         text-align: center;
         background-color: $red; color: $white;
-        height: 65px; width: 130px;
-        line-height: 41px;
-    }
-    .stationStatus, .stationAccessibility {
-        &.ok { background-color: $green; color: $white; }
+        width: 130px;
+        line-height: 18px;
+        a { color: $white; &:hover { color: $white; text-decoration: none; } }
     }
 }
