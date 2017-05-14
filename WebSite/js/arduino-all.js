@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "get",
-        url: "http://192.168.0.82/api/ArduinoStations/",
+        url: "http://10.16.248.133/api/ArduinoStations/",
         success: function (response) {
             response.forEach(function(element) {
                 var latlng = element.location.split(',');
@@ -197,7 +197,7 @@ function LoadWeatherApi() {
 
 /*function startRefresh() {
     setTimeout(startRefresh, 60000);
-    $.get('http://192.168.0.82/api/ArduinoStations', function(data) {
+    $.get('http://10.16.248.133/api/ArduinoStations', function(data) {
         $('#checkrefresh').html(data);    
     });
 }*/
