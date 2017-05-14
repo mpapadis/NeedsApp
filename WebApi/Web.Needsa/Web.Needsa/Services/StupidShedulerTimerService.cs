@@ -14,7 +14,7 @@ namespace Web.Needsa.Services
     public static class StupidShedulerTimerService
     {
         private static Thread thread;
-        private static int TimeSpan = 1000 * 10; //every 10 seconds
+        private static int TimeSpan = 1000 * 30; //every 10 seconds
         private static Timer timer;
         private static IServiceProvider _serviceProvider;
 
@@ -32,6 +32,9 @@ namespace Web.Needsa.Services
             timer = new Timer(_ => OnCallBack(), null, 0, TimeSpan);
         }
 
+        private static int connectTimeOut =(int)Math.Round( (double)TimeSpan * 0.666, 0);
+        private static CancellationTokenSource CancellationTokenSource = null;
+
         private static void OnCallBack()
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite); //stops the timer
@@ -43,8 +46,11 @@ namespace Web.Needsa.Services
                 var uri = new Uri(arduinoStation.Uri + "getsensorsdata");
                 try
                 {
+                    CancellationTokenSource = new CancellationTokenSource(connectTimeOut);
+                    var t = CancellationTokenSource.Token;
                     using (HttpClient client = new HttpClient())
-                    using (HttpResponseMessage response = client.GetAsync(uri).Result)
+                    
+                    using (HttpResponseMessage response = client.GetAsync(uri, t).Result)
                     using (HttpContent content = response.Content)
                     {
                         // ... Read the string.
@@ -68,7 +74,7 @@ namespace Web.Needsa.Services
                                 db.SaveChanges();
 
                                 //edw mporoume na kanoume entoles me tin igrasia
-                                if(vv.VariableId == 5)
+                                if (vv.VariableId == 5)
                                 {
                                     //var avg = db.ArduinoStationVariables.Where(x=>x.VariableId == 5).Take(2).Select(x=>x.ValueCaptured).Average(x=>x);
                                     //teleutees kapies
