@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <section class="adminContainer">
+    <section class="adminContainer container-fluid">
         <div class="row">
             <div class="menuCont col-xs-12 col-sm-3">
                 <div class="logoCont">
@@ -42,8 +42,8 @@
                         </div>
                         <div class="areaInfo"><strong>Υγρασία Εδάφους (Centibar / kPa)</strong>: <span class="areaInfoVal humidity"></span></div>
                         <div class="areaInfo"><strong>Θερμοκρασία Εδάφους</strong>: <span class="areaInfoVal temperature"></span> <sup>o</sup>C</div>
-                        <div id="curve_chart" style="width: 500px; height: 500px"></div>
 
+                        <div id="curve_chart" style="width: 500px; height: 500px"></div>
                         <div id="checkrefresh"></div>
                     </div>
                     <div class="col-xs-12 col-sm-6 weather">
@@ -82,10 +82,11 @@
                         </div>
                     </div>
                 </div>
+                <!--<div class="row">
+                    
+                    <div class="col-xs-12"><div id="chart_eco_div"></div></div>
+                </div>-->
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12"><div id="chart_eco_div"></div></div>
         </div>
     </section>
     
@@ -142,7 +143,7 @@
                         dataType    : 'json',
                         contentType : "application/json",
                         data        : JSON.stringify(openCloseCommandData),
-                        url: "http://10.16.248.133/api/ArduinoStations/OpenCloseCommand/",
+                        url         : "http://10.16.248.133/api/ArduinoStations/OpenCloseCommand/",
                         success     : function (response) {
                         }
                     });
